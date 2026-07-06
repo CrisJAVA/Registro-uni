@@ -17,7 +17,7 @@ function handleAreaChange(value) {
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('registrationForm');
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             alert('Procesando registro del postulante...');
         });
