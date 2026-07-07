@@ -15,8 +15,11 @@ public class Pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "numero_operacion", length = 50, unique = true)
-    private String numeroOperacion;
+    @Column(name = "numero_verificacion", length = 8)
+    private String numeroVerificacion;
+
+    @Column(name = "numero_operacion", length = 7, unique = true)
+    private String numeroMovimiento;
 
     @Column(length = 100)
     private String entidadFinanciera;

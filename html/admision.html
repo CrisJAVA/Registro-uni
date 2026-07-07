@@ -199,15 +199,22 @@
                         <div class="p-lg overflow-y-auto space-y-lg">
                                 <!-- Verification Field -->
                                 <div class="flex flex-col gap-xs max-w-sm">
-                                        <label class="font-label-md text-label-md text-on-surface-variant">Número de
-                                                Operación (Código de verificación)</label>
+                                        <label class="font-label-md text-label-md text-on-surface-variant">Código de
+                                                Verificación</label>
                                         <div class="flex gap-xs">
-                                                <input id="pagoNumOperacion" class="flex-grow border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
-                                                        placeholder="Ej. 123456789" type="text" />
+                                                <input id="pagoVerificacion"
+                                                        class="flex-grow border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
+                                                        placeholder="Ej. 12345678"
+                                                        type="text"
+                                                        maxlength="8"
+                                                        inputmode="numeric"
+                                                        onkeypress="return /[0-9]/.test(event.key)"
+                                                        oninput="filtrarSoloNumeros(this)" />
                                                 <button onclick="verificarPago()"
                                                         class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-on-secondary-container transition-all">Verificar
                                                         Pago</button>
                                         </div>
+                                        <p id="errorVerificacion" class="text-error text-caption hidden"></p>
                                 </div>
                                 <!-- Form Fields Grid -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
@@ -229,10 +236,17 @@
                                                 </select>
                                         </div>
                                         <div class="flex flex-col gap-xs">
-                                                <label class="font-label-md text-label-md text-on-surface-variant">Nro.
-                                                        Operación</label>
-                                                <input id="pagoNumOp2" class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
-                                                        placeholder="Ingrese número" type="text" />
+                                                <label class="font-label-md text-label-md text-on-surface-variant">Número de
+                                                        Movimiento</label>
+                                                <input id="pagoMovimiento"
+                                                        class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
+                                                        placeholder="Ingrese 7 dígitos"
+                                                        type="text"
+                                                        maxlength="7"
+                                                        inputmode="numeric"
+                                                        onkeypress="return /[0-9]/.test(event.key)"
+                                                        oninput="filtrarSoloNumeros(this)" />
+                                                <p id="errorMovimiento" class="text-error text-caption hidden"></p>
                                         </div>
                                         <div class="flex flex-col gap-xs">
                                                 <label
@@ -253,7 +267,7 @@
                                                 <thead class="bg-surface-container-high text-on-surface-variant">
                                                         <tr>
                                                                 <th class="px-md py-sm font-label-md">Tipo</th>
-                                                                <th class="px-md py-sm font-label-md">Nro. Operación
+                                                                <th class="px-md py-sm font-label-md">Nro. Movimiento
                                                                 </th>
                                                                 <th class="px-md py-sm font-label-md">Monto</th>
                                                                 <th class="px-md py-sm font-label-md">Fecha</th>

@@ -8,7 +8,8 @@ import java.time.LocalDate;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class PagoResponse {
     private Long id;
-    private String numeroOperacion;
+    private String numeroVerificacion;
+    private String numeroMovimiento;
     private String entidadFinanciera;
     private BigDecimal monto;
     private LocalDate fechaPago;
