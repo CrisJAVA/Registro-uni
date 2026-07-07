@@ -195,7 +195,12 @@
                                                         class="text-label-md font-label-md text-on-surface-variant">Número
                                                         de documento</label>
                                                 <input id="numeroDocumento" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
-                                                        placeholder="Ej. 70123456" type="text" />
+                                                        placeholder="Ej. 70123456" type="text"
+                                                        maxlength="8"
+                                                        inputmode="numeric"
+                                                        onkeypress="return /[0-9]/.test(event.key)"
+                                                        oninput="filtrarSoloNumeros(this)" />
+                                                <p id="errorNumeroDocumento" class="text-error text-caption hidden"></p>
                                         </div>
                                         <!-- Names & Surnames -->
                                         <div class="md:col-span-6 flex flex-col gap-xs">
@@ -263,18 +268,21 @@
                                                 <label
                                                         class="text-label-md font-label-md text-on-surface-variant">Departamento</label>
                                                 <select id="departamento"
-                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        onchange="cargarProvincias(this.value)">
                                                         <option value="">Seleccionar</option>
                                                         <option>Lima</option>
                                                         <option>Arequipa</option>
                                                         <option>La Libertad</option>
+                                                        <option>Ica</option>
                                                 </select>
                                         </div>
                                         <div class="md:col-span-4 flex flex-col gap-xs">
                                                 <label
                                                         class="text-label-md font-label-md text-on-surface-variant">Provincia</label>
                                                 <select id="provincia"
-                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        onchange="cargarDistritos(this.value)">
                                                         <option value="">Seleccionar</option>
                                                 </select>
                                         </div>

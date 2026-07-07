@@ -22,7 +22,7 @@ public class ReporteService {
         response.setContentType("text/csv;charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=postulantes.csv");
 
-        List<Object[]> data = postulanteRepository.findAllByOrderByFechaRegistroDesc().stream()
+        List<Object[]> data = postulanteRepository.findAllConAreaCarrera().stream()
                 .map(p -> new Object[]{
                         p.getNumeroDocumento(), p.getNombres(), p.getApellidos(),
                         p.getEmail(), p.getTelefono(),
@@ -53,7 +53,7 @@ public class ReporteService {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=postulantes.xlsx");
 
-        List<Object[]> data = postulanteRepository.findAllByOrderByFechaRegistroDesc().stream()
+        List<Object[]> data = postulanteRepository.findAllConAreaCarrera().stream()
                 .map(p -> new Object[]{
                         p.getNumeroDocumento(), p.getNombres(), p.getApellidos(),
                         p.getEmail(), p.getTelefono(),
@@ -99,7 +99,7 @@ public class ReporteService {
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=postulantes.pdf");
 
-        List<Object[]> data = postulanteRepository.findAllByOrderByFechaRegistroDesc().stream()
+        List<Object[]> data = postulanteRepository.findAllConAreaCarrera().stream()
                 .map(p -> new Object[]{
                         p.getNumeroDocumento(), p.getNombres(), p.getApellidos(),
                         p.getArea() != null ? p.getArea().getNombre() : "",

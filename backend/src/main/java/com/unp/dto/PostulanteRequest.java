@@ -1,6 +1,6 @@
 package com.unp.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -8,11 +8,16 @@ import java.time.LocalDate;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class PostulanteRequest {
     private String tipoDocumento;
+
+    @Pattern(regexp = "^\\d{8}$", message = "El DNI debe contener exactamente 8 dígitos numéricos")
     private String numeroDocumento;
+
     @NotBlank(message = "Los nombres son obligatorios")
     private String nombres;
+
     @NotBlank(message = "Los apellidos son obligatorios")
     private String apellidos;
+
     private LocalDate fechaNacimiento;
     private String sexo;
     private String email;

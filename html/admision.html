@@ -197,93 +197,50 @@
                         </div>
                         <!-- Modal Body -->
                         <div class="p-lg overflow-y-auto space-y-lg">
-                                <!-- Verification Field -->
-                                <div class="flex flex-col gap-xs max-w-sm">
-                                        <label class="font-label-md text-label-md text-on-surface-variant">Código de
-                                                Verificación</label>
-                                        <div class="flex gap-xs">
-                                                <input id="pagoVerificacion"
-                                                        class="flex-grow border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
+                                <!-- Error General -->
+                                <div id="errorGeneral" class="hidden w-full p-sm bg-error-container/20 border border-error/30 rounded-lg text-error text-body-md text-center"></div>
+                                <!-- Verification Fields -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                                        <div class="flex flex-col gap-xs">
+                                                <label class="font-label-md text-label-md text-on-surface-variant">Código de
+                                                        Verificación</label>
+                                                <input id="pagoCodigo"
+                                                        class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
                                                         placeholder="Ej. 12345678"
                                                         type="text"
                                                         maxlength="8"
                                                         inputmode="numeric"
                                                         onkeypress="return /[0-9]/.test(event.key)"
                                                         oninput="filtrarSoloNumeros(this)" />
-                                                <button onclick="verificarPago()"
-                                                        class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-on-secondary-container transition-all">Verificar
-                                                        Pago</button>
-                                        </div>
-                                        <p id="errorVerificacion" class="text-error text-caption hidden"></p>
-                                </div>
-                                <!-- Form Fields Grid -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-                                        <div class="flex flex-col gap-xs">
-                                                <label class="font-label-md text-label-md text-on-surface-variant">Pago
-                                                        por</label>
-                                                <input class="bg-surface-container-low border-outline-variant rounded-lg px-sm py-xs font-body-md text-body-md text-on-surface-variant italic"
-                                                        disabled="" type="text" value="Derecho de Admisión" />
-                                        </div>
-                                        <div class="flex flex-col gap-xs">
-                                                <label class="font-label-md text-label-md text-on-surface-variant">Entidad
-                                                        Financiera</label>
-                                                <select id="pagoEntidad"
-                                                        class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md">
-                                                        <option>Banco de la Nación</option>
-                                                        <option>BCP</option>
-                                                        <option>Interbank</option>
-                                                        <option>Scotiabank</option>
-                                                </select>
+                                                <p id="errorCodigo" class="text-error text-caption hidden"></p>
                                         </div>
                                         <div class="flex flex-col gap-xs">
                                                 <label class="font-label-md text-label-md text-on-surface-variant">Número de
                                                         Movimiento</label>
                                                 <input id="pagoMovimiento"
                                                         class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
-                                                        placeholder="Ingrese 7 dígitos"
+                                                        placeholder="Ingrese 6 dígitos"
                                                         type="text"
-                                                        maxlength="7"
+                                                        maxlength="6"
                                                         inputmode="numeric"
                                                         onkeypress="return /[0-9]/.test(event.key)"
                                                         oninput="filtrarSoloNumeros(this)" />
                                                 <p id="errorMovimiento" class="text-error text-caption hidden"></p>
                                         </div>
                                         <div class="flex flex-col gap-xs">
-                                                <label
-                                                        class="font-label-md text-label-md text-on-surface-variant">Monto</label>
-                                                <input id="pagoMonto" class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
-                                                        placeholder="S/." step="0.01" type="number" />
+                                                <label class="font-label-md text-label-md text-on-surface-variant">Monto
+                                                        (S/.)</label>
+                                                <input id="pagoMonto"
+                                                        class="bg-surface-container-low border-outline-variant rounded-lg px-sm py-xs font-body-md text-body-md text-on-surface-variant"
+                                                        readonly type="text" placeholder="Se cargară automáticamente" />
                                         </div>
                                         <div class="flex flex-col gap-xs">
                                                 <label class="font-label-md text-label-md text-on-surface-variant">Fecha
                                                         de pago</label>
-                                                <input id="pagoFecha" class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
-                                                        type="date" />
+                                                <input id="pagoFecha"
+                                                        class="bg-surface-container-low border-outline-variant rounded-lg px-sm py-xs font-body-md text-body-md text-on-surface-variant"
+                                                        readonly type="text" placeholder="Se cargară automáticamente" />
                                         </div>
-                                </div>
-                                <!-- Data Table -->
-                                <div class="border border-outline-variant rounded-lg overflow-hidden">
-                                        <table class="w-full text-left font-body-md text-body-md">
-                                                <thead class="bg-surface-container-high text-on-surface-variant">
-                                                        <tr>
-                                                                <th class="px-md py-sm font-label-md">Tipo</th>
-                                                                <th class="px-md py-sm font-label-md">Nro. Movimiento
-                                                                </th>
-                                                                <th class="px-md py-sm font-label-md">Monto</th>
-                                                                <th class="px-md py-sm font-label-md">Fecha</th>
-                                                                <th class="px-md py-sm font-label-md text-center">
-                                                                        Opciones</th>
-                                                        </tr>
-                                                </thead>
-                                                <tbody class="divide-y divide-outline-variant">
-                                                        <tr>
-                                                                <td class="px-md py-xl text-center text-on-surface-variant bg-white italic"
-                                                                        colspan="5">
-                                                                        Ningún dato disponible en esta tabla
-                                                                </td>
-                                                        </tr>
-                                                </tbody>
-                                        </table>
                                 </div>
                         </div>
                         <!-- Modal Footer -->

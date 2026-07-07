@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pagos")
@@ -15,22 +15,38 @@ public class Pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "numero_verificacion", length = 8)
-    private String numeroVerificacion;
+    @Column(name = "nombre_cliente", length = 200)
+    private String nombreCliente;
 
-    @Column(name = "numero_operacion", length = 7, unique = true)
+    @Column(name = "codigo", length = 20)
+    private String codigo;
+
+    @Column(name = "descripcion_pago", length = 200)
+    private String descripcionPago;
+
+    @Column(name = "importe_pagar", precision = 12, scale = 2)
+    private BigDecimal importePagar;
+
+    @Column(name = "importe_pagado", precision = 12, scale = 2)
+    private BigDecimal importePagado;
+
+    @Column(name = "oficina", length = 100)
+    private String oficina;
+
+    @Column(name = "numero_movimiento", length = 20)
     private String numeroMovimiento;
 
-    @Column(length = 100)
-    private String entidadFinanciera;
-
-    private BigDecimal monto;
-
     @Column(name = "fecha_pago")
-    private LocalDate fechaPago;
+    private LocalDateTime fechaPago;
 
-    @Column(length = 20)
-    private String estado;
+    @Column(name = "fecha_proceso")
+    private LocalDateTime fechaProceso;
+
+    @Column(name = "forma_pago", length = 50)
+    private String formaPago;
+
+    @Column(name = "canal", length = 50)
+    private String canal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postulante_id")

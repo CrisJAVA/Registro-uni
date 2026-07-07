@@ -7,9 +7,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostulanteRepository extends JpaRepository<Postulante, Long> {
+
+    @Query("SELECT p FROM Postulante p LEFT JOIN FETCH p.area LEFT JOIN FETCH p.carrera ORDER BY p.fechaRegistro DESC")
+    List<Postulante> findAllConAreaCarrera();
 
     @Query("SELECT p FROM Postulante p LEFT JOIN FETCH p.area LEFT JOIN FETCH p.carrera WHERE " +
            "(:search IS NULL OR p.numeroDocumento LIKE %:search% OR p.nombres LIKE %:search% OR p.apellidos LIKE %:search%) AND " +
@@ -20,5 +24,6 @@ public interface PostulanteRepository extends JpaRepository<Postulante, Long> {
                            @Param("areaId") Long areaId,
                            @Param("carreraId") Long carreraId);
 
-    List<Postulante> findAllByOrderByFechaRegistroDesc();
+    @Query("SELECT p FROM Postulante p LEFT JOIN FETCH p.area LEFT JOIN FETCH p.carrera WHERE p.id = :id")
+    Optional<Postulante> findByIdConAreaCarrera(@Param("id") Long id);
 }

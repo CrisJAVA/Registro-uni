@@ -18,74 +18,63 @@ function ocultarError(id) {
     }
 }
 
-function validarVerificacion(valor) {
-    if (!valor) {
-        mostrarError('errorVerificacion', 'El código de verificación es obligatorio');
-        return false;
-    }
-    if (!/^\d{1,8}$/.test(valor)) {
-        mostrarError('errorVerificacion', 'Solo números, máximo 8 dígitos');
-        return false;
-    }
-    ocultarError('errorVerificacion');
-    return true;
-}
-
-function validarMovimiento(valor) {
-    if (!valor) {
-        mostrarError('errorMovimiento', 'El número de movimiento es obligatorio');
-        return false;
-    }
-    if (!/^\d{7}$/.test(valor)) {
-        mostrarError('errorMovimiento', 'Debe ser exactamente 7 dígitos numéricos');
-        return false;
-    }
-    ocultarError('errorMovimiento');
-    return true;
-}
-
 function verificarPago() {
-    const verInput = document.getElementById('pagoVerificacion');
+    const codigoInput = document.getElementById('pagoCodigo');
     const movInput = document.getElementById('pagoMovimiento');
-    const entidadSelect = document.getElementById('pagoEntidad');
     const montoInput = document.getElementById('pagoMonto');
     const fechaInput = document.getElementById('pagoFecha');
 
-    const verificacion = verInput ? verInput.value.trim() : '';
-    const movimiento = movInput ? movInput.value.trim() : '';
+    const codigo = codigoInput ? codigoInput.value.trim() : '';
+    const numeroMovimiento = movInput ? movInput.value.trim() : '';
 
-    const verValido = validarVerificacion(verificacion);
-    const movValido = validarMovimiento(movimiento);
+    ocultarError('errorCodigo');
+    ocultarError('errorMovimiento');
+    ocultarError('errorGeneral');
 
-    if (!verValido || !movValido) {
+    if (!codigo || !numeroMovimiento) {
+        mostrarError('errorGeneral', 'Ingrese el código de verificación y el número de movimiento.');
         return;
     }
 
-    const body = {
-        numeroVerificacion: verificacion,
-        numeroMovimiento: movimiento,
-        entidadFinanciera: entidadSelect ? entidadSelect.value : '',
-        monto: montoInput ? parseFloat(montoInput.value) || null : null,
-        fechaPago: fechaInput ? fechaInput.value || null : null
-    };
+    if (!/^\d{1,8}$/.test(codigo) || !/^\d{6}$/.test(numeroMovimiento)) {
+        mostrarError('errorGeneral', 'Datos de pago inválidos.');
+        return;
+    }
 
-    apiPost('/api/pagos/validar', body)
+    const btn = document.querySelector('#payment-modal button[onclick="verificarPago()"]');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Verificando...';
+    }
+
+    apiPost('/api/pagos/verificar', { codigo, numeroMovimiento })
         .then(data => {
-            if (data.estado === 'NO_ENCONTRADO') {
-                alert(data.mensaje || 'El número de movimiento no fue encontrado.');
-            } else if (data.estado === 'VALIDADO' || data.estado === 'CONFIRMADO') {
-                alert('Pago validado correctamente. Redirigiendo al registro...');
+            if (!data.encontrado) {
+                mostrarError('errorGeneral', data.mensaje || 'Pago no encontrado.');
+                if (montoInput) montoInput.value = '';
+                if (fechaInput) fechaInput.value = '';
+            } else {
+                ocultarError('errorGeneral');
+                if (montoInput) montoInput.value = data.monto || '';
+                if (fechaInput && data.fechaPago) {
+                    fechaInput.value = data.fechaPago;
+                }
                 localStorage.setItem('pagoValidado', 'true');
                 localStorage.setItem('pagoData', JSON.stringify(data));
+                alert('Pago encontrado. Redirigiendo al registro...');
                 setTimeout(() => {
                     window.location.href = 'registro.html';
                 }, 1000);
-            } else {
-                alert(`Estado del pago: ${data.estado}. ${data.mensaje || ''}`);
             }
         })
         .catch(err => {
-            alert(err.message || 'Error al conectar con el servidor.');
+            mostrarError('errorGeneral', 'Error al conectar con el servidor.');
+        })
+        .finally(() => {
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = 'Verificar Pago';
+            }
         });
 }
 

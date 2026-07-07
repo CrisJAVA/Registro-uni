@@ -14,8 +14,8 @@ public class PagoController {
 
     private final PagoService pagoService;
 
-    @PostMapping("/validar")
-    public ResponseEntity<PagoResponse> validarPago(@Valid @RequestBody PagoRequest request) {
+    @PostMapping("/verificar")
+    public ResponseEntity<PagoResponse> verificarPago(@Valid @RequestBody PagoRequest request) {
         return ResponseEntity.ok(pagoService.validarPago(request));
     }
 }

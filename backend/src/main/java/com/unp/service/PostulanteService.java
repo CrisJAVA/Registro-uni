@@ -8,6 +8,7 @@ import com.unp.repository.CarreraRepository;
 import com.unp.repository.PostulanteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +21,7 @@ public class PostulanteService {
     private final AreaRepository areaRepository;
     private final CarreraRepository carreraRepository;
 
+    @Transactional
     public PostulanteResponse registrar(PostulanteRequest request) {
         var postulante = new Postulante();
         postulante.setTipoDocumento(request.getTipoDocumento());
@@ -52,13 +54,15 @@ public class PostulanteService {
         return toResponse(saved);
     }
 
+    @Transactional(readOnly = true)
     public List<PostulanteResponse> listarTodos() {
-        return postulanteRepository.findAllByOrderByFechaRegistroDesc()
+        return postulanteRepository.findAllConAreaCarrera()
                 .stream()
                 .map(this::toResponse)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<PostulanteResponse> buscar(String search, Long areaId, Long carreraId) {
         return postulanteRepository.buscar(search, areaId, carreraId)
                 .stream()
@@ -66,12 +70,14 @@ public class PostulanteService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public PostulanteResponse obtenerPorId(Long id) {
-        var p = postulanteRepository.findById(id)
+        var p = postulanteRepository.findByIdConAreaCarrera(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Postulante no encontrado con id: " + id));
         return toResponse(p);
     }
 
+    @Transactional
     public PostulanteResponse actualizar(Long id, PostulanteRequest request) {
         var p = postulanteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Postulante no encontrado con id: " + id));
@@ -105,6 +111,7 @@ public class PostulanteService {
         return toResponse(saved);
     }
 
+    @Transactional
     public void eliminar(Long id) {
         if (!postulanteRepository.existsById(id)) {
             throw new ResourceNotFoundException("Postulante no encontrado con id: " + id);
@@ -112,8 +119,9 @@ public class PostulanteService {
         postulanteRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<PostulanteResponse> listarTodosParaReporte() {
-        return postulanteRepository.findAllByOrderByFechaRegistroDesc()
+        return postulanteRepository.findAllConAreaCarrera()
                 .stream()
                 .map(this::toResponse)
                 .toList();

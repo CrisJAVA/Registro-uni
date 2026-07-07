@@ -8,7 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PagoRepository extends JpaRepository<Pago, Long> {
-    Optional<Pago> findByNumeroMovimiento(String numeroMovimiento);
-    boolean existsByNumeroMovimiento(String numeroMovimiento);
-    Optional<Pago> findByNumeroVerificacion(String numeroVerificacion);
+    Optional<Pago> findByCodigoAndNumeroMovimiento(String codigo, String numeroMovimiento);
 }

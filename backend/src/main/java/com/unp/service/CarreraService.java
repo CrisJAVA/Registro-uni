@@ -4,6 +4,7 @@ import com.unp.dto.CarreraResponse;
 import com.unp.repository.CarreraRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,8 +14,9 @@ public class CarreraService {
 
     private final CarreraRepository carreraRepository;
 
+    @Transactional(readOnly = true)
     public List<CarreraResponse> listarTodas() {
-        return carreraRepository.findAll().stream()
+        return carreraRepository.findAllConArea().stream()
                 .map(c -> CarreraResponse.builder()
                         .id(c.getId())
                         .nombre(c.getNombre())
@@ -24,13 +26,14 @@ public class CarreraService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<CarreraResponse> listarPorArea(Long areaId) {
-        return carreraRepository.findByAreaId(areaId).stream()
+        return carreraRepository.findByAreaIdConArea(areaId).stream()
                 .map(c -> CarreraResponse.builder()
                         .id(c.getId())
                         .nombre(c.getNombre())
-                        .areaId(c.getArea().getId())
-                        .areaNombre(c.getArea().getNombre())
+                        .areaId(c.getArea() != null ? c.getArea().getId() : null)
+                        .areaNombre(c.getArea() != null ? c.getArea().getNombre() : null)
                         .build())
                 .toList();
     }
