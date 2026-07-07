@@ -179,145 +179,145 @@
                                         </div>
                                         <div class="grid grid-cols-1 md:grid-cols-12 gap-md">
                                                 <!-- ID Type & Number -->
-                                                <div class="md:col-span-4 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Tipo
-                                                                de documento</label>
-                                                        <select
-                                                                class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
-                                                                <option>DNI</option>
-                                                                <option>Carné de Extranjería</option>
-                                                                <option>Pasaporte</option>
-                                                        </select>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Tipo
+                                                        de documento</label>
+                                                <select id="tipoDocumento"
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        <option>DNI</option>
+                                                        <option>Carné de Extranjería</option>
+                                                        <option>Pasaporte</option>
+                                                </select>
+                                        </div>
+                                        <div class="md:col-span-8 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Número
+                                                        de documento</label>
+                                                <input id="numeroDocumento" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="Ej. 70123456" type="text" />
+                                        </div>
+                                        <!-- Names & Surnames -->
+                                        <div class="md:col-span-6 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Nombres</label>
+                                                <input id="nombres" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="Ingresa tus nombres" type="text" />
+                                        </div>
+                                        <div class="md:col-span-6 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Apellidos</label>
+                                                <input id="apellidos" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="Ingresa tus apellidos completos"
+                                                        type="text" />
+                                        </div>
+                                        <!-- Birth & Sex -->
+                                        <div class="md:col-span-6 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Fecha
+                                                        de nacimiento</label>
+                                                <input id="fechaNacimiento" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        type="date" />
+                                        </div>
+                                        <div class="md:col-span-6 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Sexo</label>
+                                                <div class="flex gap-lg py-xs">
+                                                        <label class="flex items-center gap-xs cursor-pointer">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="sexo" type="radio" value="Masculino" />
+                                                                <span class="text-body-md">Masculino</span>
+                                                        </label>
+                                                        <label class="flex items-center gap-xs cursor-pointer">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="sexo" type="radio" value="Femenino" />
+                                                                <span class="text-body-md">Femenino</span>
+                                                        </label>
                                                 </div>
-                                                <div class="md:col-span-8 flex flex-col gap-xs">
+                                        </div>
+                                        <!-- Contact -->
+                                        <div class="md:col-span-8 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Correo
+                                                        electrónico</label>
+                                                <input id="email" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="nombre@ejemplo.com" type="email" />
+                                        </div>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Teléfono
+                                                        móvil</label>
+                                                <input id="telefono" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="999 999 999" type="tel" />
+                                        </div>
+                                        <!-- Address -->
+                                        <div class="md:col-span-12 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Dirección
+                                                        completa</label>
+                                                <input id="direccion" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="Av. Principal 123 - Urb. Los Sauces"
+                                                        type="text" />
+                                        </div>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Departamento</label>
+                                                <select id="departamento"
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        <option value="">Seleccionar</option>
+                                                        <option>Lima</option>
+                                                        <option>Arequipa</option>
+                                                        <option>La Libertad</option>
+                                                </select>
+                                        </div>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Provincia</label>
+                                                <select id="provincia"
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        <option value="">Seleccionar</option>
+                                                </select>
+                                        </div>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Distrito</label>
+                                                <select id="distrito"
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        <option value="">Seleccionar</option>
+                                                </select>
+                                        </div>
+                                        <!-- School Type -->
+                                        <div class="md:col-span-12 flex flex-col gap-xs mt-sm">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Tipo
+                                                        de colegio de procedencia</label>
+                                                <div class="flex flex-wrap gap-lg py-xs">
                                                         <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Número
-                                                                de documento</label>
-                                                        <input class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
-                                                                placeholder="Ej. 70123456" type="text" />
-                                                </div>
-                                                <!-- Names & Surnames -->
-                                                <div class="md:col-span-6 flex flex-col gap-xs">
+                                                                class="flex items-center gap-xs cursor-pointer group">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="tipo_colegio" type="radio" value="Publico Estatal" />
+                                                                <span
+                                                                        class="text-body-md group-hover:text-secondary">Público
+                                                                        Estatal</span>
+                                                        </label>
                                                         <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Nombres</label>
-                                                        <input class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
-                                                                placeholder="Ingresa tus nombres" type="text" />
-                                                </div>
-                                                <div class="md:col-span-6 flex flex-col gap-xs">
+                                                                class="flex items-center gap-xs cursor-pointer group">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="tipo_colegio" type="radio" value="Privado Particular" />
+                                                                <span
+                                                                        class="text-body-md group-hover:text-secondary">Privado
+                                                                        Particular</span>
+                                                        </label>
                                                         <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Apellidos</label>
-                                                        <input class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
-                                                                placeholder="Ingresa tus apellidos completos"
-                                                                type="text" />
+                                                                class="flex items-center gap-xs cursor-pointer group">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="tipo_colegio" type="radio" value="Publico de Gestion Privada" />
+                                                                <span
+                                                                        class="text-body-md group-hover:text-secondary">Público
+                                                                        de Gestión Privada</span>
+                                                        </label>
                                                 </div>
-                                                <!-- Birth & Sex -->
-                                                <div class="md:col-span-6 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Fecha
-                                                                de nacimiento</label>
-                                                        <input class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
-                                                                type="date" />
-                                                </div>
-                                                <div class="md:col-span-6 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Sexo</label>
-                                                        <div class="flex gap-lg py-xs">
-                                                                <label class="flex items-center gap-xs cursor-pointer">
-                                                                        <input class="text-secondary focus:ring-secondary"
-                                                                                name="sexo" type="radio" />
-                                                                        <span class="text-body-md">Masculino</span>
-                                                                </label>
-                                                                <label class="flex items-center gap-xs cursor-pointer">
-                                                                        <input class="text-secondary focus:ring-secondary"
-                                                                                name="sexo" type="radio" />
-                                                                        <span class="text-body-md">Femenino</span>
-                                                                </label>
-                                                        </div>
-                                                </div>
-                                                <!-- Contact -->
-                                                <div class="md:col-span-8 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Correo
-                                                                electrónico</label>
-                                                        <input class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
-                                                                placeholder="nombre@ejemplo.com" type="email" />
-                                                </div>
-                                                <div class="md:col-span-4 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Teléfono
-                                                                móvil</label>
-                                                        <input class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
-                                                                placeholder="999 999 999" type="tel" />
-                                                </div>
-                                                <!-- Address -->
-                                                <div class="md:col-span-12 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Dirección
-                                                                completa</label>
-                                                        <input class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
-                                                                placeholder="Av. Principal 123 - Urb. Los Sauces"
-                                                                type="text" />
-                                                </div>
-                                                <div class="md:col-span-4 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Departamento</label>
-                                                        <select
-                                                                class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
-                                                                <option>Seleccionar</option>
-                                                                <option>Lima</option>
-                                                                <option>Arequipa</option>
-                                                                <option>La Libertad</option>
-                                                        </select>
-                                                </div>
-                                                <div class="md:col-span-4 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Provincia</label>
-                                                        <select
-                                                                class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
-                                                                <option>Seleccionar</option>
-                                                        </select>
-                                                </div>
-                                                <div class="md:col-span-4 flex flex-col gap-xs">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Distrito</label>
-                                                        <select
-                                                                class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
-                                                                <option>Seleccionar</option>
-                                                        </select>
-                                                </div>
-                                                <!-- School Type -->
-                                                <div class="md:col-span-12 flex flex-col gap-xs mt-sm">
-                                                        <label
-                                                                class="text-label-md font-label-md text-on-surface-variant">Tipo
-                                                                de colegio de procedencia</label>
-                                                        <div class="flex flex-wrap gap-lg py-xs">
-                                                                <label
-                                                                        class="flex items-center gap-xs cursor-pointer group">
-                                                                        <input class="text-secondary focus:ring-secondary"
-                                                                                name="tipo_colegio" type="radio" />
-                                                                        <span
-                                                                                class="text-body-md group-hover:text-secondary">Público
-                                                                                Estatal</span>
-                                                                </label>
-                                                                <label
-                                                                        class="flex items-center gap-xs cursor-pointer group">
-                                                                        <input class="text-secondary focus:ring-secondary"
-                                                                                name="tipo_colegio" type="radio" />
-                                                                        <span
-                                                                                class="text-body-md group-hover:text-secondary">Privado
-                                                                                Particular</span>
-                                                                </label>
-                                                                <label
-                                                                        class="flex items-center gap-xs cursor-pointer group">
-                                                                        <input class="text-secondary focus:ring-secondary"
-                                                                                name="tipo_colegio" type="radio" />
-                                                                        <span
-                                                                                class="text-body-md group-hover:text-secondary">Público
-                                                                                de Gestión Privada</span>
-                                                                </label>
-                                                        </div>
-                                                </div>
+                                        </div>
                                         </div>
                                 </div>
                                 <!-- Section 2: Área Académica -->
@@ -336,13 +336,6 @@
                                                                 id="areaPostulacion"
                                                                 onchange="handleAreaChange(this.value)">
                                                                 <option value="">Seleccione un área</option>
-                                                                <option value="A">A - Ciencias de la Salud</option>
-                                                                <option value="B">B - Ciencias Básicas</option>
-                                                                <option value="C">C - Ingenierías</option>
-                                                                <option value="D">D - Ciencias Económicas y de la
-                                                                        Gestión</option>
-                                                                <option value="E">E - Humanidades y Ciencias Jurídicas
-                                                                </option>
                                                         </select>
                                                 </div>
                                                 <!-- Conditional Career Dropdown -->
@@ -354,15 +347,9 @@
                                                         <select
                                                                 class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
                                                                 <option value="">Seleccione su carrera</option>
-                                                                <option>Medicina Humana</option>
-                                                                <option>Enfermería</option>
-                                                                <option>Odontología</option>
-                                                                <option>Farmacia y Bioquímica</option>
-                                                                <option>Psicología</option>
-                                                                <option>Nutrición</option>
                                                         </select>
                                                 </div>
-                                        </div>
+                                                </div>
                                 </div>
                                 <!-- Action Buttons -->
                                 <div class="flex flex-col-reverse md:flex-row justify-end items-center gap-md mt-lg">
@@ -421,6 +408,7 @@
                         </p>
                 </div>
         </footer>
+        <script src="../js/api.js"></script>
         <script src="../js/registro.js"></script>
 </body>
 

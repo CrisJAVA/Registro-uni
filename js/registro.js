@@ -1,22 +1,50 @@
-function handleAreaChange(value) {
+let areasData = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadAreas();
+
+    const form = document.getElementById('registrationForm');
+    if (form) {
+        form.addEventListener('submit', handleRegistration);
+    }
+});
+
+async function loadAreas() {
+    try {
+        areasData = await apiGet('/api/areas');
+        const select = document.getElementById('areaPostulacion');
+        if (select) {
+            select.innerHTML = '<option value="">Seleccione un área</option>';
+            areasData.forEach(area => {
+                const opt = document.createElement('option');
+                opt.value = area.id;
+                opt.textContent = area.nombre;
+                select.appendChild(opt);
+            });
+        }
+    } catch (err) {
+        console.error('Error al cargar áreas:', err);
+    }
+}
+
+async function handleAreaChange(areaId) {
     const careerContainer = document.getElementById('carreraContainer');
     const carreraSelect = careerContainer ? careerContainer.querySelector('select') : null;
 
-    const careers = {
-        'A': ['Medicina Humana', 'Enfermería', 'Odontología', 'Farmacia y Bioquímica', 'Psicología', 'Nutrición'],
-        'B': ['Biología', 'Química', 'Física', 'Matemática'],
-        'C': ['Ingeniería de Sistemas', 'Ingeniería Civil', 'Ingeniería Industrial', 'Ingeniería Ambiental'],
-        'D': ['Administración', 'Contabilidad', 'Economía', 'Marketing'],
-        'E': ['Derecho', 'Ciencias Políticas', 'Comunicación', 'Educación']
-    };
+    if (!areaId) {
+        careerContainer.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => careerContainer.classList.add('hidden'), 300);
+        return;
+    }
 
-    if (value && careers[value]) {
+    try {
+        const carreras = await apiGet(`/api/carreras?areaId=${areaId}`);
         if (carreraSelect) {
             carreraSelect.innerHTML = '<option value="">Seleccione su carrera</option>';
-            careers[value].forEach(c => {
+            carreras.forEach(c => {
                 const opt = document.createElement('option');
-                opt.value = c;
-                opt.textContent = c;
+                opt.value = c.id;
+                opt.textContent = c.nombre;
                 carreraSelect.appendChild(opt);
             });
         }
@@ -25,48 +53,65 @@ function handleAreaChange(value) {
             careerContainer.classList.remove('translate-y-2', 'opacity-0');
             careerContainer.classList.add('translate-y-0', 'opacity-100');
         }, 10);
-    } else {
-        careerContainer.classList.add('translate-y-2', 'opacity-0');
-        setTimeout(() => {
-            careerContainer.classList.add('hidden');
-        }, 300);
+    } catch (err) {
+        console.error('Error al cargar carreras:', err);
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('registrationForm');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const data = {};
+async function handleRegistration(e) {
+    e.preventDefault();
+    const form = e.target;
 
-            data.tipoDocumento = formData.get('tipoDocumento') || 'DNI';
-            data.numeroDocumento = form.querySelector('input[placeholder="Ej. 70123456"]') ? form.querySelector('input[placeholder="Ej. 70123456"]').value : '';
-            data.nombres = form.querySelector('input[placeholder="Ingresa tus nombres"]') ? form.querySelector('input[placeholder="Ingresa tus nombres"]').value : '';
-            data.apellidos = form.querySelector('input[placeholder="Ingresa tus apellidos completos"]') ? form.querySelector('input[placeholder="Ingresa tus apellidos completos"]').value : '';
-            data.fechaNacimiento = form.querySelector('input[type="date"]') ? form.querySelector('input[type="date"]').value : '';
-            data.sexo = formData.get('sexo') || '';
-            data.email = form.querySelector('input[type="email"]') ? form.querySelector('input[type="email"]').value : '';
-            data.telefono = form.querySelector('input[type="tel"]') ? form.querySelector('input[type="tel"]').value : '';
-            data.direccion = form.querySelector('input[placeholder="Av. Principal 123 - Urb. Los Sauces"]') ? form.querySelector('input[placeholder="Av. Principal 123 - Urb. Los Sauces"]').value : '';
-            data.departamento = form.querySelectorAll('select')[1] && form.querySelectorAll('select')[1].value !== 'Seleccionar' ? form.querySelectorAll('select')[1].value : '';
-            data.provincia = form.querySelectorAll('select')[2] && form.querySelectorAll('select')[2].value !== 'Seleccionar' ? form.querySelectorAll('select')[2].value : '';
-            data.distrito = form.querySelectorAll('select')[3] && form.querySelectorAll('select')[3].value !== 'Seleccionar' ? form.querySelectorAll('select')[3].value : '';
-            data.tipoColegio = formData.get('tipo_colegio') || '';
-            data.areaPostulacion = document.getElementById('areaPostulacion') ? document.getElementById('areaPostulacion').value : '';
-            data.carrera = form.querySelector('#carreraContainer select') ? form.querySelector('#carreraContainer select').value : '';
-            data.fechaRegistro = new Date().toLocaleDateString('es-PE');
-            data.id = Date.now();
+    const tipoDocumento = document.getElementById('tipoDocumento')?.value || 'DNI';
+    const numeroDocumento = document.getElementById('numeroDocumento')?.value || '';
+    const nombres = document.getElementById('nombres')?.value || '';
+    const apellidos = document.getElementById('apellidos')?.value || '';
+    const fechaNacimiento = document.getElementById('fechaNacimiento')?.value || null;
+    const sexoRadio = form.querySelector('input[name="sexo"]:checked');
+    const sexo = sexoRadio ? sexoRadio.value : '';
+    const email = document.getElementById('email')?.value || '';
+    const telefono = document.getElementById('telefono')?.value || '';
+    const direccion = document.getElementById('direccion')?.value || '';
+    const departamento = document.getElementById('departamento')?.value || '';
+    const provincia = document.getElementById('provincia')?.value || '';
+    const distrito = document.getElementById('distrito')?.value || '';
+    const tipoColegioRadio = form.querySelector('input[name="tipo_colegio"]:checked');
+    const tipoColegio = tipoColegioRadio ? tipoColegioRadio.value : '';
+    const areaSelect = document.getElementById('areaPostulacion');
+    const areaId = areaSelect && areaSelect.value ? parseInt(areaSelect.value) : null;
+    const carreraSelect = document.querySelector('#carreraContainer select');
+    const carreraId = carreraSelect && carreraSelect.value ? parseInt(carreraSelect.value) : null;
 
-            let postulantes = JSON.parse(localStorage.getItem('postulantes') || '[]');
-            postulantes.push(data);
-            localStorage.setItem('postulantes', JSON.stringify(postulantes));
-
-            alert('Registro exitoso. Redirigiendo al panel de administración...');
-            setTimeout(() => {
-                location.href = 'admin.html';
-            }, 1500);
-        });
+    if (!nombres || !apellidos) {
+        alert('Los nombres y apellidos son obligatorios.');
+        return;
     }
-});
+
+    const body = {
+        tipoDocumento,
+        numeroDocumento,
+        nombres,
+        apellidos,
+        fechaNacimiento: fechaNacimiento || null,
+        sexo,
+        email,
+        telefono,
+        direccion,
+        departamento,
+        provincia,
+        distrito,
+        tipoColegio,
+        areaId,
+        carreraId
+    };
+
+    try {
+        await apiPost('/api/postulantes/registrar', body);
+        alert('Registro exitoso. Redirigiendo al panel de administración...');
+        setTimeout(() => {
+            location.href = 'admin.html';
+        }, 1500);
+    } catch (err) {
+        alert('Error al registrar: ' + err.message);
+    }
+}

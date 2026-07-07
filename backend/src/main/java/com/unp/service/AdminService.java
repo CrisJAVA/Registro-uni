@@ -3,13 +3,11 @@ package com.unp.service;
 import com.unp.dto.LoginRequest;
 import com.unp.dto.LoginResponse;
 import com.unp.repository.AdminRepository;
-import com.unp.security.AdminPrincipal;
 import com.unp.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +17,6 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
-    private final PasswordEncoder passwordEncoder;
 
     public LoginResponse login(LoginRequest request) {
         try {
@@ -40,17 +37,5 @@ public class AdminService {
                 .email(admin.getEmail())
                 .mensaje("Inicio de sesión exitoso")
                 .build();
-    }
-
-    public void initAdmin() {
-        if (!adminRepository.existsByUsername("admin")) {
-            var admin = com.unp.entity.Administrador.builder()
-                    .username("admin")
-                    .password(passwordEncoder.encode("123456"))
-                    .nombre("Administrador")
-                    .email("admin@unp.edu.pe")
-                    .build();
-            adminRepository.save(admin);
-        }
     }
 }

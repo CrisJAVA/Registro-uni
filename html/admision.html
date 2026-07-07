@@ -202,7 +202,7 @@
                                         <label class="font-label-md text-label-md text-on-surface-variant">Número de
                                                 Operación (Código de verificación)</label>
                                         <div class="flex gap-xs">
-                                                <input class="flex-grow border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
+                                                <input id="pagoNumOperacion" class="flex-grow border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
                                                         placeholder="Ej. 123456789" type="text" />
                                                 <button onclick="verificarPago()"
                                                         class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-on-secondary-container transition-all">Verificar
@@ -220,7 +220,7 @@
                                         <div class="flex flex-col gap-xs">
                                                 <label class="font-label-md text-label-md text-on-surface-variant">Entidad
                                                         Financiera</label>
-                                                <select
+                                                <select id="pagoEntidad"
                                                         class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md">
                                                         <option>Banco de la Nación</option>
                                                         <option>BCP</option>
@@ -231,19 +231,19 @@
                                         <div class="flex flex-col gap-xs">
                                                 <label class="font-label-md text-label-md text-on-surface-variant">Nro.
                                                         Operación</label>
-                                                <input class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
+                                                <input id="pagoNumOp2" class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
                                                         placeholder="Ingrese número" type="text" />
                                         </div>
                                         <div class="flex flex-col gap-xs">
                                                 <label
                                                         class="font-label-md text-label-md text-on-surface-variant">Monto</label>
-                                                <input class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
+                                                <input id="pagoMonto" class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
                                                         placeholder="S/." step="0.01" type="number" />
                                         </div>
                                         <div class="flex flex-col gap-xs">
                                                 <label class="font-label-md text-label-md text-on-surface-variant">Fecha
                                                         de pago</label>
-                                                <input class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
+                                                <input id="pagoFecha" class="border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary rounded-lg px-sm py-xs font-body-md text-body-md"
                                                         type="date" />
                                         </div>
                                 </div>
@@ -310,6 +310,7 @@
                         </div>
                 </div>
         </footer>
+        <script src="../js/api.js"></script>
         <script src="../js/admision.js"></script>
 </body>
 

@@ -6,7 +6,6 @@ import com.unp.exception.ResourceNotFoundException;
 import com.unp.repository.AreaRepository;
 import com.unp.repository.CarreraRepository;
 import com.unp.repository.PostulanteRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
