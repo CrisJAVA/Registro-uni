@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Registro del Postulante - Universidad Nacional del Pacífico</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <link href="../css/style.css" rel="stylesheet" />
+        <script id="tailwind-config">
+                tailwind.config = {
+                        darkMode: "class",
+                        theme: {
+                                extend: {
+                                        "colors": {
+                                                "tertiary-fixed": "#dce3e8",
+                                                "surface-variant": "#d9e3f4",
+                                                "inverse-primary": "#a7c8ff",
+                                                "surface-container-lowest": "#ffffff",
+                                                "error-container": "#ffdad6",
+                                                "on-primary": "#ffffff",
+                                                "primary-container": "#003366",
+                                                "outline": "#737780",
+                                                "inverse-surface": "#27313e",
+                                                "on-secondary-container": "#00447d",
+                                                "on-secondary": "#ffffff",
+                                                "surface-bright": "#f8f9ff",
+                                                "surface-container-low": "#eef4ff",
+                                                "on-tertiary-fixed": "#151d20",
+                                                "on-background": "#121c28",
+                                                "secondary-fixed-dim": "#a3c9ff",
+                                                "error": "#ba1a1a",
+                                                "secondary-fixed": "#d3e3ff",
+                                                "surface": "#f8f9ff",
+                                                "on-surface": "#121c28",
+                                                "tertiary-container": "#2d3438",
+                                                "on-error-container": "#93000a",
+                                                "tertiary-fixed-dim": "#c0c7cc",
+                                                "surface-dim": "#d1dbec",
+                                                "primary-fixed-dim": "#a7c8ff",
+                                                "on-tertiary-container": "#959ca1",
+                                                "on-primary-container": "#799dd6",
+                                                "surface-container-highest": "#d9e3f4",
+                                                "secondary": "#1a60a4",
+                                                "primary-fixed": "#d5e3ff",
+                                                "background": "#f8f9ff",
+                                                "outline-variant": "#c3c6d1",
+                                                "on-tertiary": "#ffffff",
+                                                "on-error": "#ffffff",
+                                                "inverse-on-surface": "#eaf1ff",
+                                                "tertiary": "#181f23",
+                                                "primary": "#001e40",
+                                                "on-surface-variant": "#43474f",
+                                                "on-secondary-fixed-variant": "#004883",
+                                                "surface-container-high": "#dfe9fa",
+                                                "on-secondary-fixed": "#001c39",
+                                                "surface-tint": "#3a5f94",
+                                                "on-primary-fixed-variant": "#1f477b",
+                                                "on-tertiary-fixed-variant": "#41484c",
+                                                "surface-container": "#e5eeff",
+                                                "on-primary-fixed": "#001b3c",
+                                                "secondary-container": "#7bb3fd"
+                                        },
+                                        "borderRadius": {
+                                                "DEFAULT": "0.25rem",
+                                                "lg": "0.5rem",
+                                                "xl": "0.75rem",
+                                                "full": "9999px"
+                                        },
+                                        "spacing": {
+                                                "xs": "8px",
+                                                "xl": "64px",
+                                                "md": "24px",
+                                                "lg": "40px",
+                                                "sm": "16px",
+                                                "margin-mobile": "16px",
+                                                "max-width": "1280px",
+                                                "margin-desktop": "auto",
+                                                "gutter": "24px",
+                                                "base": "4px"
+                                        },
+                                        "fontFamily": {
+                                                "headline-lg": ["Inter"],
+                                                "label-md": ["Inter"],
+                                                "headline-lg-mobile": ["Inter"],
+                                                "title-lg": ["Inter"],
+                                                "headline-md": ["Inter"],
+                                                "display-lg": ["Inter"],
+                                                "body-lg": ["Inter"],
+                                                "body-md": ["Inter"],
+                                                "caption": ["Inter"]
+                                        },
+                                        "fontSize": {
+                                                "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                                                "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                                                "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                                                "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                                                "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                                                "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                                                "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                                                "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                                                "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+                                        }
+                                },
+                        },
+                }
+        </script>
+</head>
+
+<body class="bg-background text-on-surface">
+        <!-- TopNavBar Shell -->
+        <nav
+                class="bg-surface dark:bg-inverse-surface shadow-sm docked full-width top-0 z-50 fixed border-b border-outline-variant/30">
+                <div
+                        class="flex justify-between items-center w-full px-md md:px-lg max-w-max-width mx-margin-desktop h-20">
+                        <div class="flex items-center gap-sm">
+                                <span class="material-symbols-outlined text-primary text-3xl"
+                                        style="font-variation-settings: 'FILL' 1;">account_balance</span>
+                                <span
+                                        class="font-title-lg text-title-lg font-bold text-primary dark:text-primary-fixed">Universidad
+                                        Nacional del Pacífico</span>
+                        </div>
+                        <div class="hidden md:flex gap-lg items-center">
+                                        <a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors"
+                                                href="index.html">Inicio</a>
+                                        <a class="font-body-md text-body-md text-secondary font-bold border-b-2 border-secondary pb-1"
+                                                href="admision.html">Admisión</a>
+                                <a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors"
+                                        href="#">Carreras</a>
+                                <a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors"
+                                        href="#">Investigación</a>
+                                <button
+                                        class="bg-primary text-on-primary px-lg py-xs rounded-lg font-label-md text-label-md hover:bg-secondary transition-all active:scale-95">
+                                        Portal del Postulante
+                                </button>
+                        </div>
+                        <button class="md:hidden text-on-surface-variant">
+                                <span class="material-symbols-outlined">menu</span>
+                        </button>
+                </div>
+        </nav>
+        <main class="pt-32 pb-xl px-margin-mobile md:px-0">
+                <div class="max-w-4xl mx-auto">
+                        <!-- Header Section -->
+                        <div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+                                <div>
+                                        <span
+                                                class="text-secondary font-label-md text-label-md uppercase tracking-wider">Proceso
+                                                de Admisión 2024-II</span>
+                                        <h1 class="font-headline-lg text-headline-lg text-primary mt-base">Registro del
+                                                Postulante</h1>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                        <span class="text-on-surface-variant font-label-md text-label-md mb-xs">Paso 3
+                                                de 3</span>
+                                        <div class="w-48 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                                                <div class="h-full bg-secondary w-full transition-all duration-700">
+                                                </div>
+                                        </div>
+                                        <span class="text-caption text-secondary mt-base font-medium">Finalización del
+                                                Expediente</span>
+                                </div>
+                        </div>
+                        <!-- Main Form Card -->
+                        <form class="flex flex-col gap-lg" id="registrationForm">
+                                <!-- Section 1: Datos Personales -->
+                                <div class="glass-card rounded-xl p-md md:p-lg shadow-sm border-t-4 border-t-primary">
+                                        <div class="flex items-center gap-xs mb-lg">
+                                                <span class="material-symbols-outlined text-primary">person</span>
+                                                <h2 class="font-title-lg text-title-lg text-primary">1. Datos Personales
+                                                </h2>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+                                                <!-- ID Type & Number -->
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Tipo
+                                                        de documento</label>
+                                                <select id="tipoDocumento"
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        <option>DNI</option>
+                                                        <option>Carné de Extranjería</option>
+                                                        <option>Pasaporte</option>
+                                                </select>
+                                        </div>
+                                        <div class="md:col-span-8 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Número
+                                                        de documento</label>
+                                                <input id="numeroDocumento" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="Ej. 70123456" type="text" />
+                                        </div>
+                                        <!-- Names & Surnames -->
+                                        <div class="md:col-span-6 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Nombres</label>
+                                                <input id="nombres" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="Ingresa tus nombres" type="text" />
+                                        </div>
+                                        <div class="md:col-span-6 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Apellidos</label>
+                                                <input id="apellidos" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="Ingresa tus apellidos completos"
+                                                        type="text" />
+                                        </div>
+                                        <!-- Birth & Sex -->
+                                        <div class="md:col-span-6 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Fecha
+                                                        de nacimiento</label>
+                                                <input id="fechaNacimiento" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        type="date" />
+                                        </div>
+                                        <div class="md:col-span-6 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Sexo</label>
+                                                <div class="flex gap-lg py-xs">
+                                                        <label class="flex items-center gap-xs cursor-pointer">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="sexo" type="radio" value="Masculino" />
+                                                                <span class="text-body-md">Masculino</span>
+                                                        </label>
+                                                        <label class="flex items-center gap-xs cursor-pointer">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="sexo" type="radio" value="Femenino" />
+                                                                <span class="text-body-md">Femenino</span>
+                                                        </label>
+                                                </div>
+                                        </div>
+                                        <!-- Contact -->
+                                        <div class="md:col-span-8 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Correo
+                                                        electrónico</label>
+                                                <input id="email" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="nombre@ejemplo.com" type="email" />
+                                        </div>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Teléfono
+                                                        móvil</label>
+                                                <input id="telefono" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="999 999 999" type="tel" />
+                                        </div>
+                                        <!-- Address -->
+                                        <div class="md:col-span-12 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Dirección
+                                                        completa</label>
+                                                <input id="direccion" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                        placeholder="Av. Principal 123 - Urb. Los Sauces"
+                                                        type="text" />
+                                        </div>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Departamento</label>
+                                                <select id="departamento"
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        <option value="">Seleccionar</option>
+                                                        <option>Lima</option>
+                                                        <option>Arequipa</option>
+                                                        <option>La Libertad</option>
+                                                </select>
+                                        </div>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Provincia</label>
+                                                <select id="provincia"
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        <option value="">Seleccionar</option>
+                                                </select>
+                                        </div>
+                                        <div class="md:col-span-4 flex flex-col gap-xs">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Distrito</label>
+                                                <select id="distrito"
+                                                        class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                        <option value="">Seleccionar</option>
+                                                </select>
+                                        </div>
+                                        <!-- School Type -->
+                                        <div class="md:col-span-12 flex flex-col gap-xs mt-sm">
+                                                <label
+                                                        class="text-label-md font-label-md text-on-surface-variant">Tipo
+                                                        de colegio de procedencia</label>
+                                                <div class="flex flex-wrap gap-lg py-xs">
+                                                        <label
+                                                                class="flex items-center gap-xs cursor-pointer group">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="tipo_colegio" type="radio" value="Publico Estatal" />
+                                                                <span
+                                                                        class="text-body-md group-hover:text-secondary">Público
+                                                                        Estatal</span>
+                                                        </label>
+                                                        <label
+                                                                class="flex items-center gap-xs cursor-pointer group">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="tipo_colegio" type="radio" value="Privado Particular" />
+                                                                <span
+                                                                        class="text-body-md group-hover:text-secondary">Privado
+                                                                        Particular</span>
+                                                        </label>
+                                                        <label
+                                                                class="flex items-center gap-xs cursor-pointer group">
+                                                                <input class="text-secondary focus:ring-secondary"
+                                                                        name="tipo_colegio" type="radio" value="Publico de Gestion Privada" />
+                                                                <span
+                                                                        class="text-body-md group-hover:text-secondary">Público
+                                                                        de Gestión Privada</span>
+                                                        </label>
+                                                </div>
+                                        </div>
+                                        </div>
+                                </div>
+                                <!-- Section 2: Área Académica -->
+                                <div class="glass-card rounded-xl p-md md:p-lg shadow-sm border-t-4 border-t-secondary">
+                                        <div class="flex items-center gap-xs mb-lg">
+                                                <span class="material-symbols-outlined text-secondary">school</span>
+                                                <h2 class="font-title-lg text-title-lg text-secondary">2. Área Académica
+                                                </h2>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                                                <div class="flex flex-col gap-xs">
+                                                        <label
+                                                                class="text-label-md font-label-md text-on-surface-variant">Área
+                                                                de Postulación</label>
+                                                        <select class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                                                id="areaPostulacion"
+                                                                onchange="handleAreaChange(this.value)">
+                                                                <option value="">Seleccione un área</option>
+                                                        </select>
+                                                </div>
+                                                <!-- Conditional Career Dropdown -->
+                                                <div class="hidden flex flex-col gap-xs transition-all duration-300 transform translate-y-2 opacity-0"
+                                                        id="carreraContainer">
+                                                        <label
+                                                                class="text-label-md font-label-md text-on-surface-variant">Carrera
+                                                                Profesional</label>
+                                                        <select
+                                                                class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20">
+                                                                <option value="">Seleccione su carrera</option>
+                                                        </select>
+                                                </div>
+                                                </div>
+                                </div>
+                                <!-- Action Buttons -->
+                                <div class="flex flex-col-reverse md:flex-row justify-end items-center gap-md mt-lg">
+                                        <button class="w-full md:w-auto px-xl py-xs rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-surface-container-highest transition-all active:scale-95"
+                                                type="button" onclick="location.href='admision.html'">
+                                                Cancelar
+                                        </button>
+                                        <button class="w-full md:w-auto px-xl py-xs rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-secondary shadow-md transition-all active:scale-95 flex items-center justify-center gap-xs"
+                                                type="submit">
+                                                <span class="material-symbols-outlined text-sm">how_to_reg</span>
+                                                Registrar Postulación
+                                        </button>
+                                </div>
+                        </form>
+                        <!-- Important Info Card -->
+                        <div
+                                class="mt-xl p-md bg-primary-container/10 rounded-xl flex gap-md items-start border border-primary-container/20">
+                                <span class="material-symbols-outlined text-primary-container mt-1">info</span>
+                                <div class="flex flex-col gap-xs">
+                                        <h4 class="text-label-md font-bold text-primary-container">Información
+                                                Importante</h4>
+                                        <p class="text-caption text-on-surface-variant leading-relaxed">
+                                                Al hacer clic en "Registrar Postulación", usted declara que toda la
+                                                información proporcionada es verídica y se somete a las bases del
+                                                proceso de admisión vigente. Un resumen de su postulación será enviado a
+                                                su correo electrónico institucional.
+                                        </p>
+                                </div>
+                        </div>
+                </div>
+        </main>
+        <!-- Footer Shell -->
+        <footer class="bg-primary dark:bg-primary-container mt-auto">
+                <div class="w-full py-lg px-md md:px-lg max-w-max-width mx-margin-desktop flex flex-col gap-sm">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+                                <div class="flex items-center gap-xs">
+                                        <span class="material-symbols-outlined text-on-primary text-3xl"
+                                                style="font-variation-settings: 'FILL' 1;">account_balance</span>
+                                        <span class="font-title-lg text-title-lg font-bold text-on-primary">UNP</span>
+                                </div>
+                                <div class="flex flex-wrap gap-md">
+                                        <a class="font-caption text-caption text-on-primary opacity-90 hover:text-secondary-fixed transition-colors"
+                                                href="#">Transparencia Universitaria</a>
+                                        <a class="font-caption text-caption text-on-primary opacity-90 hover:text-secondary-fixed transition-colors"
+                                                href="#">Mapa del Sitio</a>
+                                        <a class="font-caption text-caption text-on-primary opacity-90 hover:text-secondary-fixed transition-colors"
+                                                href="#">Políticas de Privacidad</a>
+                                        <a class="font-caption text-caption text-on-primary opacity-90 hover:text-secondary-fixed transition-colors"
+                                                href="#">Términos y Condiciones</a>
+                                </div>
+                        </div>
+                        <div class="h-[1px] bg-on-primary/10 w-full my-sm"></div>
+                        <p class="font-caption text-caption text-on-primary opacity-70">
+                                © 2024 Universidad Nacional del Pacífico. Todos los derechos reservados. Institución
+                                acreditada por SUNEDU.
+                        </p>
+                </div>
+        </footer>
+        <script src="../js/api.js"></script>
+        <script src="../js/registro.js"></script>
+</body>
+
+</html>

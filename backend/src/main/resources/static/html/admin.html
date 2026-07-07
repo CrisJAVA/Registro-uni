@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Panel de Administración - Universidad Nacional del Pacífico</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="../css/style.css" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#dce3e8",
+                    "surface-variant": "#d9e3f4",
+                    "inverse-primary": "#a7c8ff",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#003366",
+                    "outline": "#737780",
+                    "inverse-surface": "#27313e",
+                    "on-secondary-container": "#00447d",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-low": "#eef4ff",
+                    "on-tertiary-fixed": "#151d20",
+                    "on-background": "#121c28",
+                    "secondary-fixed-dim": "#a3c9ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#d3e3ff",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#121c28",
+                    "tertiary-container": "#2d3438",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#c0c7cc",
+                    "surface-dim": "#d1dbec",
+                    "primary-fixed-dim": "#a7c8ff",
+                    "on-tertiary-container": "#959ca1",
+                    "on-primary-container": "#799dd6",
+                    "surface-container-highest": "#d9e3f4",
+                    "secondary": "#1a60a4",
+                    "primary-fixed": "#d5e3ff",
+                    "background": "#f8f9ff",
+                    "outline-variant": "#c3c6d1",
+                    "on-tertiary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "tertiary": "#181f23",
+                    "primary": "#001e40",
+                    "on-surface-variant": "#43474f",
+                    "on-secondary-fixed-variant": "#004883",
+                    "surface-container-high": "#dfe9fa",
+                    "on-secondary-fixed": "#001c39",
+                    "surface-tint": "#3a5f94",
+                    "on-primary-fixed-variant": "#1f477b",
+                    "on-tertiary-fixed-variant": "#41484c",
+                    "surface-container": "#e5eeff",
+                    "on-primary-fixed": "#001b3c",
+                    "secondary-container": "#7bb3fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "xl": "64px",
+                    "md": "24px",
+                    "lg": "40px",
+                    "sm": "16px",
+                    "margin-mobile": "16px",
+                    "max-width": "1280px",
+                    "margin-desktop": "auto",
+                    "gutter": "24px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "caption": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col bg-background text-on-surface">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-inverse-surface shadow-sm docked full-width top-0 z-50 fixed border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-md md:px-lg max-w-max-width mx-margin-desktop h-20">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<span class="font-title-lg text-title-lg font-bold text-primary dark:text-primary-fixed">Panel de Administración</span>
+</div>
+<div class="flex items-center gap-sm">
+<button onclick="location.href='index.html'"
+class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">home</span> Inicio
+</button>
+<button onclick="cerrarSesion()"
+class="bg-primary text-on-primary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-secondary transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">logout</span> Cerrar Sesión
+</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-xl px-margin-mobile md:px-0">
+<div class="max-w-7xl mx-auto">
+<!-- Header -->
+<div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<span class="text-secondary font-label-md text-label-md uppercase tracking-wider">Panel de Control</span>
+<h1 class="font-headline-lg text-headline-lg text-primary mt-base">Gestión de Postulantes</h1>
+<p class="text-on-surface-variant font-body-md mt-xs">Administra los registros de postulantes del proceso de admisión 2026.</p>
+</div>
+<div class="flex items-center gap-sm">
+<button onclick="exportarCSV()"
+class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-on-secondary-container transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">download</span> CSV
+</button>
+<button onclick="exportarExcel()"
+class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-on-secondary-container transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">table_chart</span> Excel
+</button>
+<button onclick="exportarPDF()"
+class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-on-secondary-container transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span> PDF
+</button>
+</div>
+</div>
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-lg">
+<div class="glass-card rounded-xl p-md border-t-4 border-t-primary">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-primary">group</span>
+<span class="font-label-md text-on-surface-variant">Total Postulantes</span>
+</div>
+<span id="totalPostulantes" class="font-display-lg text-primary">0</span>
+</div>
+<div class="glass-card rounded-xl p-md border-t-4 border-t-secondary">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-secondary">school</span>
+<span class="font-label-md text-on-surface-variant">Carreras</span>
+</div>
+<span id="totalCarreras" class="font-display-lg text-secondary">0</span>
+</div>
+<div class="glass-card rounded-xl p-md border-t-4 border-t-tertiary">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-tertiary">business</span>
+<span class="font-label-md text-on-surface-variant">Áreas</span>
+</div>
+<span id="totalAreas" class="font-display-lg text-tertiary">0</span>
+</div>
+</div>
+<!-- Search and Filters -->
+<div class="glass-card rounded-xl p-md mb-lg">
+<div class="flex flex-col md:flex-row gap-md">
+<div class="flex-grow">
+<label class="font-label-md text-label-md text-on-surface-variant mb-xs block">Buscar</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input id="searchInput"
+class="w-full rounded-lg border-outline-variant bg-surface pl-10 pr-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+placeholder="Buscar por DNI, nombre, apellido..." type="text" oninput="filtrarPostulantes()"/>
+</div>
+</div>
+<div class="md:w-48">
+<label class="font-label-md text-label-md text-on-surface-variant mb-xs block">Área</label>
+<select id="filterArea"
+class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+onchange="filtrarPostulantes()">
+<option value="">Todas</option>
+</select>
+</div>
+<div class="md:w-48">
+<label class="font-label-md text-label-md text-on-surface-variant mb-xs block">Carrera</label>
+<select id="filterCarrera"
+class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+onchange="filtrarPostulantes()">
+<option value="">Todas</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Data Table -->
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md">
+<thead class="bg-primary text-on-primary">
+<tr>
+<th class="px-md py-sm font-label-md">DNI</th>
+<th class="px-md py-sm font-label-md">Nombre</th>
+<th class="px-md py-sm font-label-md">Apellido</th>
+<th class="px-md py-sm font-label-md">Área</th>
+<th class="px-md py-sm font-label-md">Carrera</th>
+<th class="px-md py-sm font-label-md text-center">Acciones</th>
+</tr>
+</thead>
+<tbody id="tablaPostulantes" class="divide-y divide-outline-variant">
+</tbody>
+</table>
+</div>
+<div id="emptyState" class="hidden p-xl text-center text-on-surface-variant">
+<span class="material-symbols-outlined text-4xl mb-sm block">inbox</span>
+<p class="font-body-md">No se encontraron postulantes registrados.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Modal: Ver Postulante -->
+<div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-margin-mobile" id="viewModal">
+<div class="modal-overlay absolute inset-0" onclick="cerrarModal('viewModal')"></div>
+<div class="relative w-full max-w-2xl bg-surface rounded-xl shadow-2xl overflow-hidden max-h-[90vh] animate-in zoom-in-95 duration-200">
+<div class="bg-primary px-lg py-md flex justify-between items-center text-on-primary">
+<h2 class="font-headline-md text-headline-md">Detalle del Postulante</h2>
+<button class="hover:bg-white/10 p-xs rounded-full transition-colors" onclick="cerrarModal('viewModal')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div id="viewModalBody" class="p-lg overflow-y-auto space-y-md"></div>
+<div class="p-lg bg-surface-container-low flex justify-end border-t border-outline-variant">
+<button onclick="cerrarModal('viewModal')"
+class="px-lg py-xs rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-surface-container transition-all">Cerrar</button>
+</div>
+</div>
+</div>
+<!-- Modal: Editar Postulante -->
+<div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-margin-mobile" id="editModal">
+<div class="modal-overlay absolute inset-0" onclick="cerrarModal('editModal')"></div>
+<div class="relative w-full max-w-2xl bg-surface rounded-xl shadow-2xl overflow-hidden max-h-[90vh] animate-in zoom-in-95 duration-200">
+<div class="bg-primary px-lg py-md flex justify-between items-center text-on-primary">
+<h2 class="font-headline-md text-headline-md">Editar Postulante</h2>
+<button class="hover:bg-white/10 p-xs rounded-full transition-colors" onclick="cerrarModal('editModal')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form id="editForm" class="p-lg overflow-y-auto space-y-md"></form>
+<div class="p-lg bg-surface-container-low flex justify-end gap-sm border-t border-outline-variant">
+<button onclick="cerrarModal('editModal')"
+class="px-lg py-xs rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-surface-container transition-all">Cancelar</button>
+<button type="submit" form="editForm"
+class="px-lg py-xs rounded-lg bg-secondary text-on-secondary font-label-md text-label-md hover:bg-on-secondary-container transition-all">Guardar Cambios</button>
+</div>
+</div>
+</div>
+<!-- Modal: Confirmar Eliminación -->
+<div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-margin-mobile" id="deleteModal">
+<div class="modal-overlay absolute inset-0" onclick="cerrarModal('deleteModal')"></div>
+<div class="relative w-full max-w-md bg-surface rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+<div class="bg-error px-lg py-md flex justify-between items-center text-on-error">
+<h2 class="font-headline-md text-headline-md">Confirmar Eliminación</h2>
+<button class="hover:bg-white/10 p-xs rounded-full transition-colors" onclick="cerrarModal('deleteModal')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-lg">
+<p class="font-body-md text-on-surface">¿Está seguro que desea eliminar al postulante <strong id="deleteNombre"></strong>? Esta acción no se puede deshacer.</p>
+</div>
+<div class="p-lg bg-surface-container-low flex justify-end gap-sm border-t border-outline-variant">
+<button onclick="cerrarModal('deleteModal')"
+class="px-lg py-xs rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-surface-container transition-all">Cancelar</button>
+<button id="confirmDeleteBtn"
+class="px-lg py-xs rounded-lg bg-error text-on-error font-label-md text-label-md hover:bg-on-error-container transition-all">Eliminar</button>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-primary-container mt-auto">
+<div class="w-full py-lg px-md md:px-lg max-w-max-width mx-margin-desktop flex flex-col gap-sm">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-on-primary text-3xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<span class="font-title-lg text-title-lg font-bold text-on-primary">UNP</span>
+</div>
+</div>
+<div class="h-[1px] bg-on-primary/10 w-full my-sm"></div>
+<p class="font-caption text-caption text-on-primary opacity-70">
+© 2024 Universidad Nacional del Pacífico. Todos los derechos reservados. Institución acreditada por SUNEDU.
+</p>
+</div>
+</footer>
+<script src="../js/api.js"></script>
+<script src="../js/admin.js"></script>
+</body></html>
