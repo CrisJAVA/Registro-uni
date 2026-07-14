@@ -1,8 +1,11 @@
+com\unp\security\EstudiantePrincipal.class
 com\unp\service\PagoService.class
 com\unp\entity\Administrador.class
 com\unp\repository\ProcesoAdmisionRepository.class
 com\unp\config\DataInitializer.class
 com\unp\service\AdminService.class
+com\unp\service\EstudianteService.class
+com\unp\entity\UsuarioEstudiante$UsuarioEstudianteBuilder.class
 com\unp\repository\PostulanteRepository.class
 com\unp\dto\AreaResponse.class
 com\unp\exception\BadRequestException.class
@@ -21,6 +24,7 @@ com\unp\entity\Administrador$AdministradorBuilder.class
 com\unp\entity\Area.class
 com\unp\controller\PagoController.class
 com\unp\dto\PagoResponse$PagoResponseBuilder.class
+com\unp\repository\UsuarioEstudianteRepository.class
 com\unp\dto\CarreraResponse$CarreraResponseBuilder.class
 com\unp\controller\CarreraController.class
 com\unp\controller\AreaController.class
@@ -31,7 +35,10 @@ com\unp\entity\Area$AreaBuilder.class
 com\unp\repository\PagoRepository.class
 com\unp\security\AdminPrincipal.class
 com\unp\security\JwtAuthenticationFilter.class
+com\unp\dto\EstudianteProfileResponse$EstudianteProfileResponseBuilder.class
+com\unp\entity\UsuarioEstudiante.class
 com\unp\UnpApplication.class
+com\unp\dto\EstudianteProfileResponse.class
 com\unp\dto\PagoResponse.class
 com\unp\dto\PostulanteResponse.class
 com\unp\entity\ProcesoAdmision.class

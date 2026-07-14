@@ -3,7 +3,7 @@ const API_BASE = (window.location.hostname === 'localhost' && window.location.po
     : 'http://localhost:8080';
 
 function getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('estudianteToken') || localStorage.getItem('token');
 }
 
 function authHeaders() {
@@ -17,10 +17,13 @@ function authHeaders() {
 
 function handleAuthError(status) {
     if (status === 401 || status === 403) {
+        const isEstudiante = localStorage.getItem('estudianteToken');
         localStorage.removeItem('token');
         localStorage.removeItem('adminUser');
-        if (!window.location.pathname.includes('login.html')) {
-            window.location.href = 'login.html';
+        localStorage.removeItem('estudianteToken');
+        localStorage.removeItem('estudianteData');
+        if (!window.location.pathname.includes('login')) {
+            window.location.href = isEstudiante ? 'login-estudiante.html' : 'login.html';
         }
         return true;
     }

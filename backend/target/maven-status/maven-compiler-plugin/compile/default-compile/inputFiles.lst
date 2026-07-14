@@ -8,6 +8,7 @@ C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\j
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\controller\ReporteController.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\dto\AreaResponse.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\dto\CarreraResponse.java
+C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\dto\EstudianteProfileResponse.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\dto\LoginRequest.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\dto\LoginResponse.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\dto\PagoRequest.java
@@ -20,6 +21,7 @@ C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\j
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\entity\Pago.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\entity\Postulante.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\entity\ProcesoAdmision.java
+C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\entity\UsuarioEstudiante.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\exception\BadRequestException.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\exception\GlobalExceptionHandler.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\exception\ResourceNotFoundException.java
@@ -29,14 +31,17 @@ C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\j
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\repository\PagoRepository.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\repository\PostulanteRepository.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\repository\ProcesoAdmisionRepository.java
+C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\repository\UsuarioEstudianteRepository.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\security\AdminPrincipal.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\security\CustomUserDetailsService.java
+C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\security\EstudiantePrincipal.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\security\JwtAuthenticationFilter.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\security\JwtTokenProvider.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\security\SecurityConfig.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\service\AdminService.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\service\AreaService.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\service\CarreraService.java
+C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\service\EstudianteService.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\service\PagoService.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\service\PostulanteService.java
 C:\Users\crist\OneDrive\Documentos\Desarrolloweb\Registro-uni\backend\src\main\java\com\unp\service\ReporteService.java

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Portal del Estudiante - Universidad Nacional del Pacífico</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "primary": "#001e40",
+              "on-primary": "#ffffff",
+              "secondary": "#1a60a4",
+              "on-secondary": "#ffffff",
+              "surface": "#f8f9ff",
+              "on-surface": "#121c28",
+              "on-surface-variant": "#43474f",
+              "surface-container": "#e5eeff",
+              "surface-container-low": "#eef4ff",
+              "outline": "#737780",
+              "outline-variant": "#c3c6d1",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6"
+            },
+            "spacing": { "xs": "8px", "sm": "16px", "md": "24px", "lg": "40px" },
+            "fontFamily": { "body-md": ["Inter"], "label-md": ["Inter"], "title-lg": ["Inter"], "headline-lg": ["Inter"] }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col bg-background text-on-surface">
+    <nav class="bg-surface shadow-sm fixed top-0 z-50 w-full border-b border-outline-variant/30">
+        <div class="flex justify-between items-center w-full px-md h-16">
+            <div class="flex items-center gap-sm">
+                <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+                <span class="font-title-lg font-bold text-primary">Universidad Nacional del Pacífico</span>
+            </div>
+            <button onclick="location.href='index.html'" class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-sm flex items-center gap-xs">
+                <span class="material-symbols-outlined text-lg">arrow_back</span> Volver
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center px-sm py-xl">
+        <div class="max-w-md w-full glass-card rounded-xl p-md md:p-lg animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div class="flex flex-col items-center text-center space-y-sm">
+                <div class="w-16 h-16 bg-secondary-container rounded-full flex items-center justify-center mb-xs">
+                    <span class="material-symbols-outlined text-[32px] text-primary">school</span>
+                </div>
+                <h1 class="font-headline-lg text-2xl font-bold text-primary">Portal del Estudiante</h1>
+                <p class="font-body-md text-on-surface-variant">Ingrese su DNI y contraseña.</p>
+
+                <div id="loginError" class="hidden w-full p-sm bg-error-container/20 border border-error/30 rounded-lg text-error text-sm text-left"></div>
+
+                <form id="loginForm" class="w-full space-y-md pt-sm">
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-md text-sm text-on-surface-variant">DNI</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">badge</span>
+                            <input id="loginDni"
+                                class="w-full rounded-lg border-outline-variant bg-surface pl-10 pr-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                placeholder="Ingrese su DNI" type="text" maxlength="8" inputmode="numeric"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-md text-sm text-on-surface-variant">Contraseña</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">lock</span>
+                            <input id="loginPass"
+                                class="w-full rounded-lg border-outline-variant bg-surface pl-10 pr-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                                placeholder="Su contraseña es su DNI" type="password"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-sm pt-sm">
+                        <button type="submit"
+                            class="w-full bg-secondary text-on-secondary hover:bg-on-secondary-container transition-all px-xl py-sm rounded-lg font-title-lg shadow-md flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined">login</span>
+                            Ingresar
+                        </button>
+                        <button type="button" onclick="location.href='index.html'"
+                            class="w-full border border-secondary text-secondary hover:bg-surface-container transition-all px-xl py-sm rounded-lg font-title-lg flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            Volver al Inicio
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/login-estudiante.js"></script>
+</body>
+</html>

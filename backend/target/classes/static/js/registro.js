@@ -200,9 +200,9 @@ async function handleRegistration(e) {
 
     try {
         await apiPost('/api/postulantes/registrar', body);
-        alert('Registro exitoso. Redirigiendo al panel de administración...');
+        alert('Registro exitoso. Ahora puede iniciar sesión con su DNI.');
         setTimeout(() => {
-            window.location.href = 'admin.html';
+            window.location.href = 'login-estudiante.html';
         }, 1500);
     } catch (err) {
         alert('Error al registrar: ' + err.message);

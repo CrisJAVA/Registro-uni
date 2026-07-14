@@ -5,16 +5,21 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/registro_uni
     username: postgres
-    password: ale220706
+    password: 180706
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        hibernate.format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: never
     open-in-view: false
 
 app:

@@ -32,10 +32,11 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/auth/login", "/api/auth/login-estudiante").permitAll()
                 .requestMatchers("/api/pagos/verificar").permitAll()
                 .requestMatchers("/api/postulantes/registrar").permitAll()
                 .requestMatchers("/api/areas/**", "/api/carreras/**").permitAll()
+                .requestMatchers("/api/auth/estudiante/**").authenticated()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
             )
@@ -52,6 +53,7 @@ public class SecurityConfig {
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         config.setExposedHeaders(List.of("Content-Disposition", "Content-Type"));
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

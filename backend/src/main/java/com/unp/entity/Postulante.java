@@ -17,7 +17,7 @@ public class Postulante {
     @Column(name = "tipo_documento", length = 30)
     private String tipoDocumento;
 
-    @Column(name = "numero_documento", length = 20)
+    @Column(name = "numero_documento", nullable = false, length = 8)
     private String numeroDocumento;
 
     @Column(length = 100)

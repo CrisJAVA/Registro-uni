@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface PostulanteRepository extends JpaRepository<Postulante, Long> {
 
+    boolean existsByNumeroDocumento(String numeroDocumento);
+
     @Query("SELECT p FROM Postulante p LEFT JOIN FETCH p.area LEFT JOIN FETCH p.carrera ORDER BY p.fechaRegistro DESC")
     List<Postulante> findAllConAreaCarrera();
 

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mi Perfil - Universidad Nacional del Pacífico</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "primary": "#001e40",
+              "on-primary": "#ffffff",
+              "secondary": "#1a60a4",
+              "on-secondary": "#ffffff",
+              "surface": "#f8f9ff",
+              "on-surface": "#121c28",
+              "on-surface-variant": "#43474f",
+              "surface-container": "#e5eeff",
+              "surface-container-low": "#eef4ff",
+              "surface-container-high": "#dfe9fa",
+              "outline": "#737780",
+              "outline-variant": "#c3c6d1",
+              "primary-container": "#003366",
+              "on-primary-container": "#799dd6",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6",
+              "secondary-container": "#7bb3fd"
+            },
+            "spacing": { "xs": "8px", "sm": "16px", "md": "24px", "lg": "40px", "xl": "64px" },
+            "fontFamily": { "body-md": ["Inter"], "label-md": ["Inter"], "title-lg": ["Inter"], "headline-lg": ["Inter"] }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col bg-background text-on-surface">
+    <nav class="bg-surface shadow-sm fixed top-0 z-50 w-full border-b border-outline-variant/30">
+        <div class="flex justify-between items-center w-full px-md h-16">
+            <div class="flex items-center gap-sm">
+                <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+                <span class="font-title-lg font-bold text-primary">UNP - Portal del Estudiante</span>
+            </div>
+            <div class="flex items-center gap-md">
+                <span id="estudianteNombre" class="text-on-surface-variant font-body-md text-sm hidden md:block"></span>
+                <button onclick="cerrarSesion()" class="flex items-center gap-xs text-error hover:text-error/80 transition-colors font-label-md text-sm">
+                    <span class="material-symbols-outlined text-lg">logout</span>
+                    Salir
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-xl px-sm md:px-lg max-w-5xl mx-auto w-full">
+        <div id="loadingState" class="flex items-center justify-center py-xl">
+            <div class="flex flex-col items-center gap-sm">
+                <div class="w-10 h-10 border-4 border-secondary border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-on-surface-variant font-body-md">Cargando perfil...</p>
+            </div>
+        </div>
+
+        <div id="profileContent" class="hidden flex flex-col gap-lg">
+            <div class="flex items-center gap-sm">
+                <span class="material-symbols-outlined text-secondary">school</span>
+                <h1 class="font-headline-lg text-2xl font-bold text-primary">Mi Perfil</h1>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+                <div class="md:col-span-1 flex flex-col items-center gap-md">
+                    <div id="photoContainer" class="w-40 h-40 rounded-full bg-surface-container-high border-4 border-secondary flex items-center justify-center overflow-hidden cursor-pointer hover:border-primary transition-colors" onclick="triggerPhotoUpload()">
+                        <span id="photoPlaceholder" class="material-symbols-outlined text-6xl text-on-surface-variant">person</span>
+                        <img id="photoPreview" class="w-full h-full object-cover hidden" alt="Foto de perfil"/>
+                    </div>
+                    <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)"/>
+                    <button onclick="triggerPhotoUpload()" class="flex items-center gap-xs px-sm py-xs rounded-lg border border-secondary text-secondary hover:bg-surface-container-low transition-colors font-label-md text-sm">
+                        <span class="material-symbols-outlined text-lg">photo_camera</span>
+                        Subir Foto
+                    </button>
+
+                    <div class="w-full mt-md">
+                        <div class="flex items-center gap-xs mb-sm">
+                            <span class="material-symbols-outlined text-secondary text-lg">fingerprint</span>
+                            <span class="font-label-md text-sm text-on-surface-variant">Huella Digital</span>
+                        </div>
+                        <div id="huellaContainer" class="w-full h-32 rounded-xl bg-surface-container-high border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-xs cursor-pointer hover:border-secondary transition-colors" onclick="triggerHuellaUpload()">
+                            <span class="material-symbols-outlined text-4xl text-on-surface-variant">fingerprint</span>
+                            <span class="text-caption text-on-surface-variant">Toque para registrar</span>
+                        </div>
+                        <input type="file" id="huellaInput" accept="image/*" class="hidden" onchange="handleHuellaUpload(event)"/>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 flex flex-col gap-md">
+                    <div class="glass-card rounded-xl p-md border-t-4 border-t-primary">
+                        <h2 class="font-title-lg text-lg font-bold text-primary mb-md flex items-center gap-xs">
+                            <span class="material-symbols-outlined">badge</span>
+                            Datos Personales
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Tipo de Documento</span>
+                                <span id="perfilTipoDoc" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Número de Documento</span>
+                                <span id="perfilNumDoc" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Nombres</span>
+                                <span id="perfilNombres" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Apellidos</span>
+                                <span id="perfilApellidos" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Fecha de Nacimiento</span>
+                                <span id="perfilFechaNac" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Sexo</span>
+                                <span id="perfilSexo" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Correo Electrónico</span>
+                                <span id="perfilEmail" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Teléfono</span>
+                                <span id="perfilTelefono" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl p-md border-t-4 border-t-secondary">
+                        <h2 class="font-title-lg text-lg font-bold text-secondary mb-md flex items-center gap-xs">
+                            <span class="material-symbols-outlined">location_on</span>
+                            Ubicación
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Departamento</span>
+                                <span id="perfilDepto" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Provincia</span>
+                                <span id="perfilProv" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Distrito</span>
+                                <span id="perfilDist" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="md:col-span-3 flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Dirección</span>
+                                <span id="perfilDireccion" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl p-md border-t-4 border-t-primary-container">
+                        <h2 class="font-title-lg text-lg font-bold text-primary mb-md flex items-center gap-xs">
+                            <span class="material-symbols-outlined">menu_book</span>
+                            Información Académica
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Área de Postulación</span>
+                                <span id="perfilArea" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Carrera Profesional</span>
+                                <span id="perfilCarrera" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Tipo de Colegio</span>
+                                <span id="perfilColegio" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-caption text-on-surface-variant">Fecha de Registro</span>
+                                <span id="perfilFechaReg" class="font-body-md text-on-surface p-xs bg-surface-container-low rounded-lg">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-primary mt-auto">
+        <div class="w-full py-md px-md flex flex-col items-center">
+            <p class="font-caption text-on-primary opacity-70">
+                © 2024 Universidad Nacional del Pacífico. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/estudiante.js"></script>
+</body>
+</html>
