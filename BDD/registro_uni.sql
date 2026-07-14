@@ -74,6 +74,30 @@ CREATE TABLE pagos (
     canal VARCHAR(10)
 );
 
+CREATE TABLE usuarios_estudiantes (
+    id SERIAL PRIMARY KEY,
+    postulante_id BIGINT NOT NULL UNIQUE,
+    dni VARCHAR(8) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    rol VARCHAR(20) NOT NULL DEFAULT 'ESTUDIANTE',
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    debe_cambiar_password BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_usuario_postulante
+        FOREIGN KEY (postulante_id)
+        REFERENCES postulantes(id)
+        ON DELETE CASCADE
+);
+ALTER TABLE postulantes
+ALTER COLUMN numero_documento TYPE VARCHAR(8);
+
+ALTER TABLE postulantes
+ALTER COLUMN numero_documento SET NOT NULL;
+
+ALTER TABLE postulantes
+ADD CONSTRAINT uk_postulantes_numero_documento
+UNIQUE (numero_documento);
 INSERT INTO pagos (nombre_cliente, codigo, descripcion_pago, importe_pagar, importe_pagado, oficina, numero_movimiento, fecha_pago, fecha_proceso, forma_pago, canal) VALUES ('MUNOA AVALOS ANA ELIZABETH', '20173423', '051 CARTA PRESENTACION 2 FAC. DE.CCPP', 15.0, 15.0, '7799', '626242', '2023-12-18 23:11:23', '2023-12-19', '02', '04');
 INSERT INTO pagos (nombre_cliente, codigo, descripcion_pago, importe_pagar, importe_pagado, oficina, numero_movimiento, fecha_pago, fecha_proceso, forma_pago, canal) VALUES ('JOYO CASAVILCA KELLY BRIGGITH', '20174630', '029 CONSTA. LABO. INTERNO FAC. FAR.BIQ', 15.0, 16.5, '0817', '626235', '2023-12-18 20:25:20', '2023-12-18', '01', '06');
 INSERT INTO pagos (nombre_cliente, codigo, descripcion_pago, importe_pagar, importe_pagado, oficina, numero_movimiento, fecha_pago, fecha_proceso, forma_pago, canal) VALUES ('JOYO CASAVILCA KELLY BRIGGITH', '20174630', '030 CONST. LABO. EXTERNO FAC. FAR.BIQ', 15.0, 16.5, '0817', '626234', '2023-12-18 20:24:25', '2023-12-18', '01', '06');
