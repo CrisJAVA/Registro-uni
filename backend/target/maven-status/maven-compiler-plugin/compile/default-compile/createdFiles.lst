@@ -65,5 +65,6 @@ com\unp\repository\AreaRepository.class
 com\unp\controller\AuthController.class
 com\unp\security\JwtTokenProvider.class
 com\unp\service\DocumentoService.class
+com\unp\dto\CambioPasswordRequest.class
 com\unp\entity\Carrera$CarreraBuilder.class
 com\unp\dto\LoginResponse$LoginResponseBuilder.class

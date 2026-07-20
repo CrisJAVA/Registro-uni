@@ -6,7 +6,10 @@ import com.unp.service.EstudianteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,5 +36,21 @@ public class AuthController {
         String dni = estudianteService.getDniFromToken(token);
         var perfil = estudianteService.obtenerPerfilByDni(dni);
         return ResponseEntity.ok(perfil);
+    }
+
+    @PutMapping("/estudiante/cambiar-password")
+    public ResponseEntity<Map<String, String>> cambiarPassword(
+            @Valid @RequestBody CambioPasswordRequest request,
+            Authentication auth) {
+        String dni = getDniFromAuth(auth);
+        estudianteService.cambiarPassword(dni, request);
+        return ResponseEntity.ok(Map.of("mensaje", "Contraseña cambiada exitosamente"));
+    }
+
+    private String getDniFromAuth(Authentication auth) {
+        if (auth != null && auth.getPrincipal() instanceof com.unp.security.EstudiantePrincipal) {
+            return ((com.unp.security.EstudiantePrincipal) auth.getPrincipal()).getDni();
+        }
+        throw new RuntimeException("Acceso no autorizado");
     }
 }

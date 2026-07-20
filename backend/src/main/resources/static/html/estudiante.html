@@ -198,11 +198,14 @@
                 </h2>
 
                 <div class="bg-surface-container-low rounded-lg p-md mb-md">
-                    <p class="text-on-surface-variant font-body-md text-sm mb-sm">Descarga la plantilla, complétala y súbela junto con los documentos adicionales requeridos.</p>
-                    <button onclick="descargarPlantilla()" class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-sm hover:bg-on-secondary-container transition-all active:scale-95 flex items-center gap-xs">
-                        <span class="material-symbols-outlined text-lg">download</span>
-                        Descargar Plantilla
-                    </button>
+                    <p class="text-on-surface-variant font-body-md text-sm mb-sm">Descarga los formatos, complétalos y súbelos junto con los documentos adicionales requeridos.</p>
+                    <div class="flex flex-wrap gap-sm">
+                        <button onclick="descargarPlantilla()" class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-sm hover:bg-on-secondary-container transition-all active:scale-95 flex items-center gap-xs">
+                            <span class="material-symbols-outlined text-lg">download</span>
+                            Ficha de Inscripción
+                        </button>
+                        <div id="plantillasDisponibles" class="flex flex-wrap gap-sm"></div>
+                    </div>
                 </div>
 
                 <div class="bg-surface-container-low rounded-lg p-md mb-md">

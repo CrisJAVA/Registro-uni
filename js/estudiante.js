@@ -41,6 +41,7 @@ async function cargarPerfil() {
         loading.classList.add('hidden');
         content.classList.remove('hidden');
         cargarDocumentos();
+        cargarPlantillasDisponibles();
     } catch (err) {
         console.error('Error al cargar perfil:', err);
         if (err.message.includes('Sesión expirada') || err.message.includes('401')) {
@@ -116,6 +117,7 @@ function showChangePasswordModal() {
             <h3 class="font-title-lg text-lg font-bold text-primary mb-md">Cambiar Contraseña</h3>
             <p class="text-on-surface-variant font-body-md text-sm mb-md">Por seguridad, debe cambiar su contraseña inicial.</p>
             <div class="flex flex-col gap-sm">
+                <input id="currentPassword" type="password" placeholder="Contraseña actual" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"/>
                 <input id="newPassword" type="password" placeholder="Nueva contraseña" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"/>
                 <input id="confirmPassword" type="password" placeholder="Confirmar contraseña" class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"/>
                 <p id="passwordError" class="text-error text-sm hidden"></p>
@@ -127,13 +129,20 @@ function showChangePasswordModal() {
     document.body.appendChild(modal);
 }
 
-function changePassword() {
+async function changePassword() {
+    const currentPass = document.getElementById('currentPassword').value;
     const newPass = document.getElementById('newPassword').value;
     const confirmPass = document.getElementById('confirmPassword').value;
     const errorEl = document.getElementById('passwordError');
 
+    if (!currentPass) {
+        errorEl.textContent = 'Ingrese su contraseña actual.';
+        errorEl.classList.remove('hidden');
+        return;
+    }
+
     if (newPass.length < 6) {
-        errorEl.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+        errorEl.textContent = 'La nueva contraseña debe tener al menos 6 caracteres.';
         errorEl.classList.remove('hidden');
         return;
     }
@@ -144,16 +153,72 @@ function changePassword() {
         return;
     }
 
-    document.getElementById('changePasswordModal').remove();
-    alert('Contraseña cambiada exitosamente.');
+    try {
+        await apiPut('/api/auth/estudiante/cambiar-password', {
+            passwordActual: currentPass,
+            nuevaPassword: newPass
+        });
+        document.getElementById('changePasswordModal').remove();
+        mostrarToast('Contraseña cambiada exitosamente.', 'success');
+    } catch (err) {
+        errorEl.textContent = err.message || 'Error al cambiar la contraseña.';
+        errorEl.classList.remove('hidden');
+    }
 }
 
 async function descargarPlantilla() {
     try {
         await apiDownload('/api/documentos/plantilla', 'plantilla_inscripcion.docx');
-        mostrarToast('Plantilla descargada exitosamente', 'success');
+        mostrarToast('Ficha de inscripción descargada', 'success');
     } catch (err) {
-        mostrarToast('Error al descargar plantilla: ' + err.message, 'error');
+        mostrarToast('Error al descargar: ' + err.message, 'error');
+    }
+}
+
+async function cargarPlantillasDisponibles() {
+    try {
+        const token = getToken();
+        const res = await fetch(`${API_BASE}/api/documentos/plantillas-disponibles`, {
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+        if (!res.ok) return;
+        const plantillas = await res.json();
+        const container = document.getElementById('plantillasDisponibles');
+        if (!container) return;
+
+        container.innerHTML = '';
+        plantillas.forEach(p => {
+            const nombreSinExt = p.nombre.replace(/\.docx$/i, '');
+            const btn = document.createElement('button');
+            btn.className = 'border-2 border-outline-variant text-on-surface-variant px-md py-xs rounded-lg font-label-md text-sm hover:border-secondary hover:text-secondary transition-all active:scale-95 flex items-center gap-xs';
+            btn.innerHTML = `<span class="material-symbols-outlined text-lg">description</span> ${escapeHtml(nombreSinExt)}`;
+            btn.onclick = () => descargarPlantillaArchivo(p.nombre);
+            container.appendChild(btn);
+        });
+    } catch (err) {
+        // Silently fail - templates are optional
+    }
+}
+
+async function descargarPlantillaArchivo(filename) {
+    try {
+        const token = getToken();
+        const res = await fetch(`${API_BASE}/api/documentos/plantillas/${encodeURIComponent(filename)}`, {
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+        if (!res.ok) throw new Error('Error al descargar');
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+        mostrarToast('Archivo descargado: ' + filename, 'success');
+    } catch (err) {
+        mostrarToast('Error al descargar: ' + err.message, 'error');
     }
 }
 

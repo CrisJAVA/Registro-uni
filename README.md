@@ -1,171 +1,261 @@
-# Sistema de Registro y Admisión - Universidad Nacional del Pacífico
+# Sistema de Admisión - Universidad Nacional del Pacífico
 
-Sistema web para la gestión del proceso de admisión de postulantes a la Universidad Nacional del Pacífico. Permite la validación de pagos bancarios, el registro de postulantes, la creación de credenciales de estudiante, la gestión administrativa y la generación de reportes.
+Sistema web para la gestión del proceso de admisión universitaria, incluyendo registro de postulantes, verificación de pagos, gestión de documentos y panel de administración.
 
----
+## Tecnologías
 
-## Descripción del Proyecto
+| Componente | Tecnología |
+|------------|-----------|
+| Backend | Java 21 + Spring Boot 3.3.4 |
+| Frontend | HTML5, CSS3 (Tailwind CSS v4), JavaScript Vanilla |
+| Base de datos | PostgreSQL |
+| Seguridad | Spring Security + JWT (jjwt 0.12.6) |
+| Reportes | Apache POI 5.3.0 (Excel), iText 2.1.7 (PDF), CSV |
+| Documentos | Apache POI (plantilla Word) |
+| Build | Maven + npm (CSS) |
 
-La aplicación está compuesta por un backend en **Spring Boot** y un frontend en **HTML, CSS y JavaScript vanilla**. El sistema sigue el siguiente flujo:
+## Estructura del Proyecto
 
-1. El postulante ingresa sus datos de pago bancario (código de verificación y número de movimiento).
-2. Si el pago es válido, completa su registro con datos personales, selección de área y carrera.
-3. Al registrar, se guarda el postulante en la tabla `postulantes` y se crea automáticamente una cuenta de estudiante en `usuarios_estudiantes` con contraseña encriptada (BCrypt).
-4. Un administrador accede al panel para gestionar los postulantes: ver, editar, eliminar y exportar reportes.
-
-Los datos de pago provienen de la base de datos, cargados inicialmente desde un archivo SQL que contiene registros reales del Banco de la Nación.
-
----
-
-## Requisitos
-
-| Componente | Versión requerida |
-|------------|-------------------|
-| Java JDK | 21 o superior |
-| Maven | 3.8 o superior |
-| PostgreSQL | 12 o superior |
-| Navegador web | Chrome, Firefox o Edge (actualizado) |
-
-No se requiere instalar Node.js ni ningún otra herramienta adicional.
-
----
+```
+Registro-uni/
+├── backend/                          # Spring Boot
+│   ├── pom.xml
+│   └── src/main/java/com/unp/
+│       ├── config/
+│       │   ├── CorsConfig.java       # Configuración CORS
+│       │   └── DataInitializer.java  # Datos semilla
+│       ├── security/
+│       │   ├── SecurityConfig.java   # Cadena de filtros Spring Security
+│       │   ├── JwtTokenProvider.java # Generación/validación JWT
+│       │   ├── JwtAuthenticationFilter.java # Filtro JWT
+│       │   ├── CustomUserDetailsService.java # Carga de usuarios
+│       │   ├── AdminPrincipal.java   # UserDetails para admin
+│       │   └── EstudiantePrincipal.java # UserDetails para estudiante
+│       ├── entity/
+│       │   ├── Administrador.java    # admins
+│       │   ├── UsuarioEstudiante.java # usuarios_estudiantes
+│       │   ├── Postulante.java       # postulantes
+│       │   ├── Area.java             # areas
+│       │   ├── Carrera.java          # carreras
+│       │   ├── Pago.java             # pagos
+│       │   ├── ProcesoAdmision.java  # procesos_admision
+│       │   └── DocumentoEstudiante.java # documentos_estudiante
+│       ├── repository/
+│       ├── dto/
+│       ├── service/
+│       ├── controller/
+│       └── exception/
+├── html/           # Plantillas HTML
+├── js/             # JavaScript
+├── css/            # Estilos Tailwind
+├── BDD/            # Scripts SQL
+└── Doc/            # Documentos
+```
 
 ## Instalación y Ejecución
 
-### 1. Crear la base de datos
+### Requisitos
 
-Conéctate a PostgreSQL y ejecuta:
+- Java 21+
+- Maven 3.9+
+- PostgreSQL 15+
+- Node.js 18+ (solo para build de CSS)
 
+### Base de Datos
+
+1. Crear la base de datos:
 ```sql
 CREATE DATABASE registro_uni;
 ```
 
-### 2. Cargar los datos iniciales
+2. Las tablas se crean automáticamente con `ddl-auto: update`. Si se desea crear manualmente:
 
-Ejecuta el script SQL incluido en el proyecto:
-
-```
-BDD/registro_uni.sql
+```sql
+-- Ejecutar BDD/registro_uni.sql (adaptado)
 ```
 
-Este archivo crea las tablas necesarias e inserta los datos iniciales: áreas, carreras, proceso de admisión, administrador, registros de pagos y la estructura de la tabla `usuarios_estudiantes`.
+### Configuración
 
-> Si prefieres que las tablas se creen automáticamente al iniciar el backend, puedes omitir la creación de tablas del script y ejecutar únicamente los `INSERT`. Sin embargo, se recomienda ejecutar el script completo para garantizar la integridad de los datos.
-
-### 3. Configurar la conexión a PostgreSQL
-
-Abre el archivo `backend/src/main/resources/application.yml` y verifica las credenciales:
+Editar `backend/src/main/resources/application.yml`:
 
 ```yaml
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/registro_uni
     username: postgres
-    password: TU_PASSWORD
+    password: tu_password
 ```
 
-### 4. Ejecutar el backend
+### Ejecutar
 
-Desde la carpeta `backend/`:
-
-```bash
-mvn clean install
+```powershell
+# Iniciar backend (puerto 8080)
+cd backend
 mvn spring-boot:run
+
+# Build CSS (opcional)
+npm run build:css
 ```
 
-El servidor estará disponible en `http://localhost:8080`.
-
-Al iniciar, el backend crea automáticamente el registro del administrador y carga los datos iniciales de áreas y carreras.
-
-### 5. Ejecutar el frontend
-
-Desde la raíz del proyecto, ejecuta un servidor local:
-
-```bash
-npx serve .
+O usando el script:
+```powershell
+.\iniciar.bat
 ```
 
-Luego accede a `http://localhost:3000/html/index.html`.
+### Acceso
 
-> Asegúrate de que el backend esté ejecutándose antes de abrir el frontend.
-
----
+| URL | Descripción |
+|-----|-------------|
+| `http://localhost:8080/html/index.html` | Landing page |
+| `http://localhost:8080/html/admision.html` | Portal del postulante |
+| `http://localhost:8080/html/login.html` | Login administrador |
+| `http://localhost:8080/html/login-estudiante.html` | Login estudiante |
+| `http://localhost:8080/html/admin.html` | Panel administración |
+| `http://localhost:8080/html/estudiante.html` | Perfil estudiante |
 
 ## Credenciales de Prueba
 
 ### Administrador
+- **Usuario:** `admin`
+- **Contraseña:** `123456`
 
-| Campo | Valor |
-|-------|-------|
-| **Usuario** | `admin` |
-| **Contraseña** | `123456` |
+### Estudiante (registrarse desde el portal del postulante)
+- Registrarse en `/html/admision.html` con un pago válido:
+  - Código: `20174630`
+  - Número de movimiento: `626235`
+- Las credenciales iniciales son el DNI (8 dígitos) como usuario y contraseña.
+- En el primer inicio de sesión, el sistema obliga a cambiar la contraseña.
 
-Estas credenciales se crean automáticamente al iniciar el backend. Se utilizan para acceder al panel de administración desde `login.html`.
+## Flujo de Autenticación
+
+### Administrador
+1. Ingresa a `/html/login.html`
+2. Envía `POST /api/auth/login` con `{ username, password }`
+3. Backend valida contra BCrypt y genera JWT (24h)
+4. Frontend almacena token en `localStorage['token']` y redirige a `admin.html`
 
 ### Estudiante
+1. Se registra desde `/html/admision.html` (verificación de pago + formulario)
+2. Recibe credenciales: DNI como usuario y contraseña
+3. Ingresa a `/html/login-estudiante.html`
+4. Envía `POST /api/auth/login-estudiante` con `{ username: DNI, password }`
+5. Backend valida contra BCrypt y genera JWT (24h)
+6. Frontend almacena token en `localStorage['estudianteToken']`
+7. Si `debeCambiarPassword = true`, se muestra modal de cambio de contraseña
+8. El cambio de contraseña llama a `PUT /api/auth/estudiante/cambiar-password`
 
-Las credenciales de estudiante se crean automáticamente al completar el registro. El DNI funciona como usuario y contraseña inicial:
+### Cierre de sesión
+- Se eliminan los tokens del `localStorage` y se redirige al login.
 
-- **Usuario**: DNI del postulante (8 dígitos)
-- **Contraseña**: Mismo DNI (el sistema solicita cambiarla al primer inicio de sesión)
+## API Endpoints
 
----
+### Autenticación
+| Método | Ruta | Acceso | Descripción |
+|--------|------|--------|-------------|
+| POST | `/api/auth/login` | Público | Login administrador |
+| POST | `/api/auth/login-estudiante` | Público | Login estudiante |
+| GET | `/api/auth/estudiante/perfil` | Autenticado | Perfil del estudiante |
+| PUT | `/api/auth/estudiante/cambiar-password` | Estudiante | Cambiar contraseña |
 
-## Datos para Realizar Pruebas
+### Postulantes
+| Método | Ruta | Acceso | Descripción |
+|--------|------|--------|-------------|
+| POST | `/api/postulantes/registrar` | Público | Registrar postulante |
+| GET | `/api/postulantes` | Admin | Listar postulantes |
+| GET | `/api/postulantes/{id}` | Admin | Obtener postulante |
+| PUT | `/api/postulantes/{id}` | Admin | Actualizar postulante |
+| DELETE | `/api/postulantes/{id}` | Admin | Eliminar postulante |
 
-El proyecto incluye **20 registros de pagos** en la tabla `pagos`, cargados mediante el archivo SQL incluido en el repositorio. Estos datos corresponden a pagos reales del Banco de la Nación y se utilizan para probar el flujo de validación de pago.
+### Áreas y Carreras
+| Método | Ruta | Acceso | Descripción |
+|--------|------|--------|-------------|
+| GET | `/api/areas` | Público | Listar áreas |
+| GET | `/api/carreras?areaId=` | Público | Listar carreras |
 
-Para probar la validación del pago durante el proceso de inscripción, utiliza los siguientes datos:
+### Pagos
+| Método | Ruta | Acceso | Descripción |
+|--------|------|--------|-------------|
+| POST | `/api/pagos/verificar` | Público | Verificar pago |
 
-| Campo | Valor |
-|-------|-------|
-| **Código de Verificación** | `20173423` |
-| **Número de Movimiento** | `626242` |
+### Documentos (Estudiante)
+| Método | Ruta | Acceso | Descripción |
+|--------|------|--------|-------------|
+| GET | `/api/documentos/plantilla` | Estudiante | Descargar plantilla Word |
+| POST | `/api/documentos/subir` | Estudiante | Subir documento |
+| GET | `/api/documentos/mis-documentos` | Estudiante | Listar documentos |
+| GET | `/api/documentos/{id}/descargar` | Estudiante | Descargar documento |
+| DELETE | `/api/documentos/{id}` | Estudiante | Eliminar/reemplazar |
 
-Estos datos se ingresan en la página de admisión (`admision.html`) y permiten avanzar al formulario de registro del postulante.
+### Documentos (Admin)
+| Método | Ruta | Acceso | Descripción |
+|--------|------|--------|-------------|
+| GET | `/api/admin/documentos` | Admin | Listar todos |
+| GET | `/api/admin/documentos/estudiante/{id}` | Admin | Documentos de estudiante |
+| PUT | `/api/admin/documentos/{id}/estado` | Admin | Cambiar estado |
+| GET | `/api/admin/documentos/{id}/descargar` | Admin | Descargar documento |
 
----
+### Reportes
+| Método | Ruta | Acceso | Descripción |
+|--------|------|--------|-------------|
+| GET | `/api/reportes/csv` | Admin | Exportar CSV |
+| GET | `/api/reportes/excel` | Admin | Exportar Excel |
+| GET | `/api/reportes/pdf` | Admin | Exportar PDF |
 
-## Funcionalidades Implementadas
+## Seguridad
 
-### Flujo del Postulante
-- Validación de pago bancario contra la base de datos.
-- Registro de postulante con datos personales completos.
-- Creación automática de credenciales de estudiante (DNI como contraseña inicial).
-- Validación de DNI duplicado antes del registro.
-- Selección dinámica de departamento, provincia y distrito (con datos de Lima, Arequipa, La Libertad e Ica).
-- Selección de área y carrera de postulación.
-- Validación de DNI con exactamente 8 dígitos numéricos.
+- **Contraseñas:** Almacenadas con BCrypt, nunca en texto plano.
+- **JWT:** Tokens con expiración de 24 horas, firmados con HMAC-SHA.
+- **Roles:** `ROLE_ADMIN` y `ROLE_ESTUDIANTE` diferenciados en UserDetails.
+- **Protección de rutas:** Endpoints admin verifican `AdminPrincipal` explícitamente.
+- **Documentos:** Estudiantes solo ven sus propios archivos (filtro por postulanteId).
+- **CORS:** Configurado para permitir orígenes locales.
 
-### Panel de Administración
-- Inicio de sesión seguro con autenticación JWT.
-- Listado de todos los postulantes registrados.
-- Búsqueda por nombre, DNI, área y carrera.
-- Visualización detallada de cada postulante.
-- Edición de datos de postulantes.
-- Eliminación de postulantes con confirmación.
-- Exportación de reportes en CSV, Excel y PDF.
-- Estadísticas: total de postulantes, carreras y áreas.
+## Solución de Errores Frecuentes
 
-### Tabla `usuarios_estudiantes`
-- Cada postulante registrado obtiene automáticamente una cuenta de estudiante.
-- Contraseña encriptada con BCrypt.
-- Rol `ESTUDIANTE` por defecto.
-- Flag `debe_cambiar_password` activado inicialmente.
+### Error: `relation "documentos_estudiante" does not exist`
+Ejecutar:
+```sql
+CREATE TABLE documentos_estudiante (
+    id BIGSERIAL PRIMARY KEY,
+    postulante_id BIGINT NOT NULL REFERENCES postulantes(id),
+    nombre_original VARCHAR(255) NOT NULL,
+    nombre_almacenado VARCHAR(255) NOT NULL,
+    tipo_archivo VARCHAR(50) NOT NULL,
+    tamano BIGINT NOT NULL,
+    tipo_documento VARCHAR(20) NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'PENDIENTE',
+    observacion TEXT,
+    fecha_subida TIMESTAMP NOT NULL,
+    fecha_revision TIMESTAMP,
+    revisado_por BIGINT REFERENCES admins(id)
+);
+CREATE INDEX idx_doc_postulante ON documentos_estudiante(postulante_id);
+```
 
----
+### Error: `Failed to bind properties under 'spring.servlet.multipart'`
+Verificar que no haya duplicados de `spring:` en `application.yml`.
 
-## Observaciones
+### Error 401/403 en peticiones
+- Verificar que el token JWT no haya expirado (24h).
+- Verificar que el token se envíe en header `Authorization: Bearer <token>`.
+- Verificar que el estudiante esté activo (`activo = true`).
 
-- La base de datos utilizada es **PostgreSQL**.
-- Los datos iniciales (áreas, carreras, administrador y pagos) se cargan mediante el archivo `BDD/registro_uni.sql` incluido en el repositorio.
-- Las tablas se crean automáticamente al iniciar el backend gracias a la configuración `ddl-auto: update`.
-- El backend expone una API REST en el puerto `8080`.
-- El frontend es una aplicación estática que se comunica con el backend mediante llamadas HTTP.
-- Las contraseñas se almacenan encriptadas con BCrypt, nunca en texto plano.
+### Error: La contraseña nueva no se guarda
+**Causa:** Versión anterior del código donde `changePassword()` solo trabajaba en cliente.
+**Solución:** Asegurar que `PUT /api/auth/estudiante/cambiar-password` tenga el body:
+```json
+{
+  "passwordActual": "contraseña_anterior",
+  "nuevaPassword": "nueva_contraseña"
+}
+```
 
----
+## Historial de Correcciones
 
-## Licencia
-
-Este proyecto es de uso académico. Universidad Nacional del Pacífico - 2024.
+### 2026-07-19
+- **CRÍTICO:** Implementado endpoint `PUT /api/auth/estudiante/cambiar-password` para persistir el cambio de contraseña en BD con BCrypt.
+- **CRÍTICO:** Corregido `changePassword()` en `estudiante.js` para consumir el endpoint real.
+- **ALTO:** Agregada verificación de rol admin en `PostulanteController` y `ReporteController`.
+- **MEDIO:** Eliminados imports no usados en `DocumentoService`.
+- **BAJO:** Eliminada propiedad `format_sql` duplicada en `application.yml`.
+- **MEDIO:** Corregido placeholder engañoso en `login-estudiante.html`.

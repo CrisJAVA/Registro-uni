@@ -118,3 +118,21 @@ INSERT INTO pagos (nombre_cliente, codigo, descripcion_pago, importe_pagar, impo
 INSERT INTO pagos (nombre_cliente, codigo, descripcion_pago, importe_pagar, importe_pagado, oficina, numero_movimiento, fecha_pago, fecha_proceso, forma_pago, canal) VALUES ('BERNAOLA ROMUCHO ZIRTAED ALIAN', '20172129', '065 DERECHO CALIGRAFIADO FAC. EDUCAC.', 20.0, 21.5, '0817', '626201', '2023-12-18 19:35:00', '2023-12-18', '01', '06');
 INSERT INTO pagos (nombre_cliente, codigo, descripcion_pago, importe_pagar, importe_pagado, oficina, numero_movimiento, fecha_pago, fecha_proceso, forma_pago, canal) VALUES ('BERNAOLA ROMUCHO ZIRTAED ALIAN', '20172129', '064 DERECHO CUADERNILLO FAC. EDUCAC.', 20.0, 21.5, '0817', '626198', '2023-12-18 19:34:02', '2023-12-18', '01', '06');
 INSERT INTO pagos (nombre_cliente, codigo, descripcion_pago, importe_pagar, importe_pagado, oficina, numero_movimiento, fecha_pago, fecha_proceso, forma_pago, canal) VALUES ('ITO YARMAS LUIS ALBERTO', '20190860', '051 CARTA PRESENTACION 2 FAC. CONTAB.', 15.0, 16.5, '0817', '626196', '2023-12-18 19:30:25', '2023-12-18', '01', '06');
+
+-- Tabla: documentos_estudiante
+CREATE TABLE documentos_estudiante (
+    id BIGSERIAL PRIMARY KEY,
+    postulante_id BIGINT NOT NULL REFERENCES postulantes(id),
+    nombre_original VARCHAR(255) NOT NULL,
+    nombre_almacenado VARCHAR(255) NOT NULL,
+    tipo_archivo VARCHAR(50) NOT NULL,
+    tamano BIGINT NOT NULL,
+    tipo_documento VARCHAR(20) NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'PENDIENTE',
+    observacion TEXT,
+    fecha_subida TIMESTAMP NOT NULL,
+    fecha_revision TIMESTAMP,
+    revisado_por BIGINT REFERENCES admins(id)
+);
+CREATE INDEX idx_documentos_postulante ON documentos_estudiante(postulante_id);
+CREATE INDEX idx_documentos_estado ON documentos_estudiante(estado);

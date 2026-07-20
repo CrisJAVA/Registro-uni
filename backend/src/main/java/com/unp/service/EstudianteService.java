@@ -1,14 +1,17 @@
 package com.unp.service;
 
+import com.unp.dto.CambioPasswordRequest;
 import com.unp.dto.LoginRequest;
 import com.unp.dto.LoginResponse;
 import com.unp.dto.EstudianteProfileResponse;
+import com.unp.exception.BadRequestException;
 import com.unp.repository.UsuarioEstudianteRepository;
 import com.unp.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,7 @@ public class EstudianteService {
     private final UsuarioEstudianteRepository usuarioEstudianteRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     public LoginResponse login(LoginRequest request) {
         try {
@@ -48,6 +52,20 @@ public class EstudianteService {
 
     public String getDniFromToken(String token) {
         return tokenProvider.getUsernameFromToken(token);
+    }
+
+    @Transactional
+    public void cambiarPassword(String dni, CambioPasswordRequest request) {
+        var usuario = usuarioEstudianteRepository.findByDni(dni)
+                .orElseThrow(() -> new BadCredentialsException("Estudiante no encontrado"));
+
+        if (!passwordEncoder.matches(request.getPasswordActual(), usuario.getPassword())) {
+            throw new BadRequestException("La contraseña actual no es correcta");
+        }
+
+        usuario.setPassword(passwordEncoder.encode(request.getNuevaPassword()));
+        usuario.setDebeCambiarPassword(false);
+        usuarioEstudianteRepository.save(usuario);
     }
 
     @Transactional(readOnly = true)

@@ -9,6 +9,8 @@ import com.unp.service.DocumentoService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,15 +19,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class DocumentoController {
 
     private final DocumentoService documentoService;
+
+    @Value("${app.doc.dir:../Doc}")
+    private String docDir;
 
     @GetMapping("/api/documentos/plantilla")
     public void descargarPlantilla(HttpServletResponse response) {
@@ -65,6 +73,56 @@ public class DocumentoController {
         String dni = getDniFromAuth(auth);
         documentoService.eliminarDocumento(id, dni);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/api/documentos/plantillas-disponibles")
+    public ResponseEntity<List<Map<String, String>>> listarPlantillas() {
+        List<Map<String, String>> plantillas = new ArrayList<>();
+        Path docPath = Paths.get(docDir).toAbsolutePath().normalize();
+
+        if (!Files.exists(docPath)) {
+            return ResponseEntity.ok(plantillas);
+        }
+
+        try (var stream = Files.list(docPath)) {
+            plantillas = stream
+                    .filter(p -> p.toString().toLowerCase().endsWith(".docx"))
+                    .map(p -> {
+                        Map<String, String> info = new HashMap<>();
+                        info.put("nombre", p.getFileName().toString());
+                        try {
+                            info.put("tamano", String.valueOf(Files.size(p)));
+                        } catch (IOException e) {
+                            info.put("tamano", "0");
+                        }
+                        return info;
+                    })
+                    .collect(Collectors.toList());
+        } catch (IOException ignored) {}
+
+        return ResponseEntity.ok(plantillas);
+    }
+
+    @GetMapping("/api/documentos/plantillas/{filename:.+}")
+    public ResponseEntity<Resource> descargarPlantillaArchivo(@PathVariable String filename) {
+        Path docPath = Paths.get(docDir).toAbsolutePath().normalize();
+        Path filePath = docPath.resolve(filename).normalize();
+
+        if (!filePath.startsWith(docPath)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!Files.exists(filePath) || !Files.isReadable(filePath)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Resource resource = new FileSystemResource(filePath);
+        String encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8).replace("+", "%20");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFilename)
+                .body(resource);
     }
 
     @GetMapping("/api/admin/documentos")
