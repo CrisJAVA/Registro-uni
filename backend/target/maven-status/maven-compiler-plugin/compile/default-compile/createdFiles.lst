@@ -1,8 +1,10 @@
+com\unp\entity\DocumentoEstudiante.class
 com\unp\security\EstudiantePrincipal.class
 com\unp\service\PagoService.class
 com\unp\entity\Administrador.class
 com\unp\repository\ProcesoAdmisionRepository.class
 com\unp\config\DataInitializer.class
+com\unp\controller\DocumentoController.class
 com\unp\service\AdminService.class
 com\unp\service\EstudianteService.class
 com\unp\entity\UsuarioEstudiante$UsuarioEstudianteBuilder.class
@@ -12,6 +14,8 @@ com\unp\exception\BadRequestException.class
 com\unp\entity\Postulante$PostulanteBuilder.class
 com\unp\dto\PostulanteResponse$PostulanteResponseBuilder.class
 com\unp\dto\PagoRequest.class
+com\unp\dto\DocumentoResponse.class
+com\unp\entity\DocumentoEstudiante$DocumentoEstudianteBuilder.class
 com\unp\dto\LoginResponse.class
 com\unp\entity\Pago$PagoBuilder.class
 com\unp\service\AreaService.class
@@ -30,6 +34,7 @@ com\unp\controller\CarreraController.class
 com\unp\controller\AreaController.class
 com\unp\exception\ResourceNotFoundException.class
 com\unp\service\PostulanteService.class
+com\unp\dto\DocumentoStatusRequest.class
 com\unp\dto\PostulanteRequest.class
 com\unp\entity\Area$AreaBuilder.class
 com\unp\repository\PagoRepository.class
@@ -43,6 +48,7 @@ com\unp\dto\PagoResponse.class
 com\unp\dto\PostulanteResponse.class
 com\unp\entity\ProcesoAdmision.class
 com\unp\dto\CarreraResponse.class
+com\unp\dto\DocumentoResponse$DocumentoResponseBuilder.class
 com\unp\dto\LoginRequest.class
 com\unp\controller\PostulanteController.class
 com\unp\entity\Pago.class
@@ -52,10 +58,12 @@ com\unp\config\CorsConfig.class
 com\unp\entity\Carrera.class
 com\unp\service\ReporteService.class
 com\unp\security\CustomUserDetailsService.class
+com\unp\repository\DocumentoRepository.class
 com\unp\security\SecurityConfig.class
 com\unp\repository\CarreraRepository.class
 com\unp\repository\AreaRepository.class
 com\unp\controller\AuthController.class
 com\unp\security\JwtTokenProvider.class
+com\unp\service\DocumentoService.class
 com\unp\entity\Carrera$CarreraBuilder.class
 com\unp\dto\LoginResponse$LoginResponseBuilder.class

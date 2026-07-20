@@ -137,6 +137,14 @@ class="bg-primary text-on-primary px-md py-xs rounded-lg font-label-md text-labe
 <p class="text-on-surface-variant font-body-md mt-xs">Administra los registros de postulantes del proceso de admisión 2026.</p>
 </div>
 <div class="flex items-center gap-sm">
+<button onclick="mostrarTab('postulantes')" id="tabBtnPostulantes"
+class="bg-primary text-on-primary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-secondary transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">group</span> Postulantes
+</button>
+<button onclick="mostrarTab('documentos')" id="tabBtnDocumentos"
+class="bg-surface-container-high text-on-surface-variant px-md py-xs rounded-lg font-label-md text-label-md hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">description</span> Documentos
+</button>
 <button onclick="exportarCSV()"
 class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-on-secondary-container transition-all active:scale-95 flex items-center gap-xs">
 <span class="material-symbols-outlined text-sm">download</span> CSV
@@ -151,6 +159,9 @@ class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-md text-
 </button>
 </div>
 </div>
+
+<div id="tabPostulantes">
+
 <!-- Stats Cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-lg">
 <div class="glass-card rounded-xl p-md border-t-4 border-t-primary">
@@ -229,7 +240,102 @@ onchange="filtrarPostulantes()">
 </div>
 </div>
 </div>
+
+<div id="tabDocumentos" class="hidden">
+    <div class="glass-card rounded-xl p-md mb-lg">
+        <div class="flex items-center gap-sm mb-sm">
+            <span class="material-symbols-outlined text-secondary">description</span>
+            <h2 class="font-title-lg text-lg font-bold text-secondary">Revisión de Documentos</h2>
+        </div>
+        <p class="text-on-surface-variant font-body-md text-sm">Revisa los documentos enviados por los estudiantes y actualiza su estado.</p>
+    </div>
+
+    <div class="glass-card rounded-xl p-md mb-md">
+        <div class="flex items-center gap-sm">
+            <div class="flex-grow relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+                <input id="docSearchInput"
+                    class="w-full rounded-lg border-outline-variant bg-surface pl-10 pr-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                    placeholder="Buscar por nombre de estudiante o documento..." type="text" oninput="filtrarDocumentosAdmin()"/>
+            </div>
+            <select id="docFilterEstado" class="rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20" onchange="filtrarDocumentosAdmin()">
+                <option value="">Todos los estados</option>
+                <option value="PENDIENTE">Pendiente</option>
+                <option value="APROBADO">Aprobado</option>
+                <option value="EN_OBSERVACION">En observación</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="glass-card rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left font-body-md text-body-md">
+                <thead class="bg-primary text-on-primary">
+                    <tr>
+                        <th class="px-md py-sm font-label-md">Estudiante</th>
+                        <th class="px-md py-sm font-label-md">Documento</th>
+                        <th class="px-md py-sm font-label-md">Tipo</th>
+                        <th class="px-md py-sm font-label-md">Fecha de envío</th>
+                        <th class="px-md py-sm font-label-md">Estado</th>
+                        <th class="px-md py-sm font-label-md text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaDocumentos" class="divide-y divide-outline-variant"></tbody>
+            </table>
+        </div>
+        <div id="emptyDocsState" class="hidden p-xl text-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-4xl mb-sm block">inbox</span>
+            <p class="font-body-md">No hay documentos enviados por los estudiantes.</p>
+        </div>
+    </div>
+</div>
+
 </main>
+
+<div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-sm"></div>
+
+<!-- Modal: Revisar Documento -->
+<div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-margin-mobile" id="revisarModal">
+    <div class="modal-overlay absolute inset-0" onclick="cerrarModal('revisarModal')"></div>
+    <div class="relative w-full max-w-lg bg-surface rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+        <div class="bg-primary px-lg py-md flex justify-between items-center text-on-primary">
+            <h2 class="font-headline-md text-headline-md">Revisar Documento</h2>
+            <button class="hover:bg-white/10 p-xs rounded-full transition-colors" onclick="cerrarModal('revisarModal')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="p-lg space-y-md">
+            <div id="revisarDocumentoInfo" class="bg-surface-container-low p-sm rounded-lg"></div>
+            <div class="flex flex-col gap-sm">
+                <label class="font-label-md text-sm text-on-surface-variant">Cambiar estado</label>
+                <div class="flex gap-sm">
+                    <button onclick="cambiarEstadoDoc('APROBADO')" class="flex-1 px-md py-sm rounded-lg bg-green-600 text-white font-label-md text-sm hover:bg-green-700 transition-all active:scale-95 flex items-center justify-center gap-xs">
+                        <span class="material-symbols-outlined text-lg">check_circle</span>
+                        Aprobado
+                    </button>
+                    <button onclick="cambiarEstadoDoc('EN_OBSERVACION')" class="flex-1 px-md py-sm rounded-lg bg-red-600 text-white font-label-md text-sm hover:bg-red-700 transition-all active:scale-95 flex items-center justify-center gap-xs">
+                        <span class="material-symbols-outlined text-lg">visibility</span>
+                        En observación
+                    </button>
+                </div>
+            </div>
+            <div id="observacionContainer" class="hidden flex flex-col gap-sm">
+                <label class="font-label-md text-sm text-on-surface-variant">Motivo de la observación <span class="text-error">*</span></label>
+                <textarea id="observacionInput" rows="3"
+                    class="w-full rounded-lg border-outline-variant bg-surface px-sm py-xs text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/20"
+                    placeholder="Describe el motivo de la observación..."></textarea>
+                <p id="observacionError" class="text-error text-sm hidden">Debe escribir el motivo de la observación.</p>
+            </div>
+        </div>
+        <div class="p-lg bg-surface-container-low flex justify-end gap-sm border-t border-outline-variant">
+            <button onclick="cerrarModal('revisarModal')"
+                class="px-lg py-xs rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-surface-container transition-all">Cancelar</button>
+            <button id="guardarRevisionBtn" onclick="guardarRevision()"
+                class="px-lg py-xs rounded-lg bg-secondary text-on-secondary font-label-md text-label-md hover:bg-on-secondary-container transition-all">Guardar</button>
+        </div>
+    </div>
+</div>
+
 <!-- Modal: Ver Postulante -->
 <div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-margin-mobile" id="viewModal">
 <div class="modal-overlay absolute inset-0" onclick="cerrarModal('viewModal')"></div>

@@ -40,6 +40,7 @@ async function cargarPerfil() {
 
         loading.classList.add('hidden');
         content.classList.remove('hidden');
+        cargarDocumentos();
     } catch (err) {
         console.error('Error al cargar perfil:', err);
         if (err.message.includes('Sesión expirada') || err.message.includes('401')) {
@@ -145,6 +146,221 @@ function changePassword() {
 
     document.getElementById('changePasswordModal').remove();
     alert('Contraseña cambiada exitosamente.');
+}
+
+async function descargarPlantilla() {
+    try {
+        await apiDownload('/api/documentos/plantilla', 'plantilla_inscripcion.docx');
+        mostrarToast('Plantilla descargada exitosamente', 'success');
+    } catch (err) {
+        mostrarToast('Error al descargar plantilla: ' + err.message, 'error');
+    }
+}
+
+async function subirDocumentoPrincipal(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    await subirArchivo(file, 'PLANTILLA', 'infoDocumentoPrincipal');
+    event.target.value = '';
+    cargarDocumentos();
+}
+
+async function subirArchivoAdicional(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    await subirArchivo(file, 'ADICIONAL', null);
+    event.target.value = '';
+    cargarDocumentos();
+}
+
+async function subirArchivo(file, tipo, containerId) {
+    const formData = new FormData();
+    formData.append('archivo', file);
+    formData.append('tipo', tipo);
+
+    try {
+        const token = getToken();
+        const res = await fetch(`${API_BASE}/api/documentos/subir`, {
+            method: 'POST',
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+            body: formData
+        });
+
+        if (handleAuthError(res.status)) {
+            throw new Error('Sesión expirada');
+        }
+
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({ error: 'Error al subir archivo' }));
+            throw new Error(err.error || err.mensaje || 'Error al subir archivo');
+        }
+
+        const data = await res.json();
+        mostrarToast('Archivo subido exitosamente: ' + data.nombreOriginal, 'success');
+    } catch (err) {
+        mostrarToast('Error: ' + err.message, 'error');
+    }
+}
+
+async function cargarDocumentos() {
+    try {
+        const docs = await apiGet('/api/documentos/mis-documentos');
+        renderizarDocumentos(docs);
+    } catch (err) {
+        if (!err.message.includes('Sesión')) {
+            console.error('Error al cargar documentos:', err);
+        }
+    }
+}
+
+function renderizarDocumentos(docs) {
+    const contenedorPrincipal = document.getElementById('infoDocumentoPrincipal');
+    const contenedorAdicionales = document.getElementById('infoArchivosAdicionales');
+    const contenedorTodos = document.getElementById('todosDocumentosContainer');
+    const lista = document.getElementById('listaDocumentos');
+
+    const principal = docs.filter(d => d.tipoDocumento === 'PLANTILLA');
+    const adicionales = docs.filter(d => d.tipoDocumento === 'ADICIONAL');
+
+    if (principal.length > 0) {
+        contenedorPrincipal.classList.remove('hidden');
+        contenedorPrincipal.innerHTML = principal.map(d => renderDocumentoItem(d)).join('');
+    } else {
+        contenedorPrincipal.classList.add('hidden');
+        contenedorPrincipal.innerHTML = '';
+    }
+
+    if (adicionales.length > 0) {
+        contenedorAdicionales.innerHTML = adicionales.map(d => renderDocumentoItem(d)).join('');
+    } else {
+        contenedorAdicionales.innerHTML = '<p class="text-on-surface-variant text-sm">No has subido archivos adicionales.</p>';
+    }
+
+    if (docs.length > 0) {
+        contenedorTodos.classList.remove('hidden');
+        lista.innerHTML = docs.map(d => renderDocumentoItem(d)).join('');
+    } else {
+        contenedorTodos.classList.add('hidden');
+    }
+}
+
+function renderDocumentoItem(doc) {
+    const estadoColors = {
+        'PENDIENTE': 'bg-yellow-100 text-yellow-800 border-yellow-300',
+        'APROBADO': 'bg-green-100 text-green-800 border-green-300',
+        'EN_OBSERVACION': 'bg-red-100 text-red-800 border-red-300'
+    };
+    const estadoLabels = {
+        'PENDIENTE': 'Pendiente',
+        'APROBADO': 'Aprobado',
+        'EN_OBSERVACION': 'En observación'
+    };
+    const estadoColor = estadoColors[doc.estado] || 'bg-gray-100 text-gray-800';
+    const tipoLabel = doc.tipoDocumento === 'PLANTILLA' ? 'Principal' : 'Adicional';
+    const tamanoKB = (doc.tamano / 1024).toFixed(1);
+    const fechaSubida = new Date(doc.fechaSubida).toLocaleString('es-PE');
+
+    let observacionHtml = '';
+    if (doc.estado === 'EN_OBSERVACION' && doc.observacion) {
+        observacionHtml = `
+            <div class="mt-xs p-xs bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                <span class="font-medium">Motivo:</span> ${escapeHtml(doc.observacion)}
+            </div>`;
+    }
+
+    let accionesHtml = `
+        <button onclick="descargarDocumento(${doc.id})" class="p-xs rounded-lg text-secondary hover:bg-secondary-container/20 transition-colors" title="Descargar">
+            <span class="material-symbols-outlined text-lg">download</span>
+        </button>`;
+
+    if (doc.estado === 'EN_OBSERVACION') {
+        accionesHtml += `
+            <button onclick="reemplazarDocumento(${doc.id})" class="p-xs rounded-lg text-error hover:bg-error-container/20 transition-colors" title="Reemplazar archivo">
+                <span class="material-symbols-outlined text-lg">refresh</span>
+            </button>`;
+    }
+
+    return `
+        <div class="flex items-start gap-sm p-sm bg-surface rounded-lg border border-outline-variant ${doc.estado === 'EN_OBSERVACION' ? 'border-l-4 border-l-red-500' : ''}">
+            <span class="material-symbols-outlined text-on-surface-variant mt-1">${doc.tipoDocumento === 'PLANTILLA' ? 'description' : 'attach_file'}</span>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-xs flex-wrap">
+                    <span class="font-medium text-sm text-on-surface truncate">${escapeHtml(doc.nombreOriginal)}</span>
+                    <span class="text-xs text-on-surface-variant">(${tamanoKB} KB)</span>
+                    <span class="text-xs bg-surface-container-high px-xs py-0.5 rounded text-on-surface-variant">${tipoLabel}</span>
+                    <span class="text-xs px-xs py-0.5 rounded border ${estadoColor}">${estadoLabels[doc.estado]}</span>
+                </div>
+                <div class="text-xs text-on-surface-variant mt-0.5">Subido: ${fechaSubida}</div>
+                ${observacionHtml}
+            </div>
+            <div class="flex items-center gap-xs flex-shrink-0">
+                ${accionesHtml}
+            </div>
+        </div>`;
+}
+
+async function descargarDocumento(id) {
+    try {
+        const docs = await apiGet('/api/documentos/mis-documentos');
+        const doc = docs.find(d => d.id === id);
+        await apiDownload(`/api/documentos/${id}/descargar`, doc ? doc.nombreOriginal : 'documento');
+        mostrarToast('Descarga iniciada', 'success');
+    } catch (err) {
+        mostrarToast('Error al descargar: ' + err.message, 'error');
+    }
+}
+
+async function reemplazarDocumento(id) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.docx,.pdf';
+    input.onchange = async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+            const token = getToken();
+            const res = await fetch(`${API_BASE}/api/documentos/${id}`, {
+                method: 'DELETE',
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+            });
+
+            if (handleAuthError(res.status)) {
+                throw new Error('Sesión expirada');
+            }
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({ error: 'Error al reemplazar' }));
+                throw new Error(err.error || 'Error al reemplazar');
+            }
+
+            await subirArchivo(file, 'PLANTILLA', null);
+            cargarDocumentos();
+        } catch (err) {
+            mostrarToast('Error: ' + err.message, 'error');
+        }
+    };
+    input.click();
+}
+
+function mostrarToast(mensaje, tipo) {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    const bgColor = tipo === 'success' ? 'bg-green-600' : tipo === 'error' ? 'bg-red-600' : 'bg-blue-600';
+    const icon = tipo === 'success' ? 'check_circle' : tipo === 'error' ? 'error' : 'info';
+
+    toast.className = `${bgColor} text-white px-md py-sm rounded-lg shadow-lg flex items-center gap-sm animate-in slide-in-from-right duration-300`;
+    toast.innerHTML = `
+        <span class="material-symbols-outlined text-lg">${icon}</span>
+        <span class="font-body-md text-sm">${escapeHtml(mensaje)}</span>
+    `;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s';
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
 }
 
 function cerrarSesion() {

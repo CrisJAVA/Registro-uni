@@ -2,6 +2,8 @@ let postulantesData = [];
 let editandoId = null;
 let areasCache = [];
 let carrerasCache = [];
+let documentosData = [];
+let documentoRevisandoId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     if (!localStorage.getItem('token')) {
@@ -292,6 +294,232 @@ async function eliminarPostulante(id) {
 
 function cerrarModal(modalId) {
     document.getElementById(modalId).classList.add('hidden');
+}
+
+function mostrarTab(tab) {
+    document.getElementById('tabPostulantes').classList.toggle('hidden', tab !== 'postulantes');
+    document.getElementById('tabDocumentos').classList.toggle('hidden', tab !== 'documentos');
+
+    const btnPost = document.getElementById('tabBtnPostulantes');
+    const btnDoc = document.getElementById('tabBtnDocumentos');
+
+    if (tab === 'postulantes') {
+        btnPost.className = 'bg-primary text-on-primary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-secondary transition-all active:scale-95 flex items-center gap-xs';
+        btnDoc.className = 'bg-surface-container-high text-on-surface-variant px-md py-xs rounded-lg font-label-md text-label-md hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 flex items-center gap-xs';
+    } else {
+        btnDoc.className = 'bg-primary text-on-primary px-md py-xs rounded-lg font-label-md text-label-md hover:bg-secondary transition-all active:scale-95 flex items-center gap-xs';
+        btnPost.className = 'bg-surface-container-high text-on-surface-variant px-md py-xs rounded-lg font-label-md text-label-md hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 flex items-center gap-xs';
+        if (documentosData.length === 0) cargarDocumentosAdmin();
+    }
+}
+
+async function cargarDocumentosAdmin() {
+    try {
+        documentosData = await apiGet('/api/admin/documentos');
+        renderizarTablaDocumentos(documentosData);
+    } catch (err) {
+        console.error('Error al cargar documentos:', err);
+        const tbody = document.getElementById('tablaDocumentos');
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="px-md py-xl text-center text-error">Error al cargar documentos: ${err.message}</td></tr>`;
+    }
+}
+
+function renderizarTablaDocumentos(data) {
+    const tbody = document.getElementById('tablaDocumentos');
+    const emptyState = document.getElementById('emptyDocsState');
+
+    if (!tbody) return;
+
+    if (data.length === 0) {
+        tbody.innerHTML = '';
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+    }
+
+    if (emptyState) emptyState.classList.add('hidden');
+
+    const estadoLabels = { 'PENDIENTE': 'Pendiente', 'APROBADO': 'Aprobado', 'EN_OBSERVACION': 'En observación' };
+    const estadoColors = {
+        'PENDIENTE': 'bg-yellow-100 text-yellow-800 border-yellow-300',
+        'APROBADO': 'bg-green-100 text-green-800 border-green-300',
+        'EN_OBSERVACION': 'bg-red-100 text-red-800 border-red-300'
+    };
+    const tipoLabels = { 'PLANTILLA': 'Principal', 'ADICIONAL': 'Adicional' };
+
+    tbody.innerHTML = data.map(d => `
+        <tr class="hover:bg-surface-container-low transition-colors ${d.estado === 'EN_OBSERVACION' ? 'bg-red-50/50' : ''}">
+            <td class="px-md py-sm">
+                <div class="font-medium text-on-surface text-sm">${escapeHtml(d.postulanteNombre + ' ' + d.postulanteApellido)}</div>
+                <div class="text-xs text-on-surface-variant">DNI: ${escapeHtml(d.postulanteDocumento || '-')}</div>
+            </td>
+            <td class="px-md py-sm text-on-surface text-sm max-w-[200px] truncate">${escapeHtml(d.nombreOriginal)}</td>
+            <td class="px-md py-sm"><span class="text-xs bg-surface-container-high px-xs py-0.5 rounded text-on-surface-variant">${tipoLabels[d.tipoDocumento] || d.tipoDocumento}</span></td>
+            <td class="px-md py-sm text-on-surface-variant text-sm">${new Date(d.fechaSubida).toLocaleString('es-PE')}</td>
+            <td class="px-md py-sm">
+                <span class="text-xs px-xs py-0.5 rounded border ${estadoColors[d.estado] || 'bg-gray-100 text-gray-800'}">${estadoLabels[d.estado] || d.estado}</span>
+                ${d.estado === 'EN_OBSERVACION' && d.observacion ? `<div class="text-xs text-red-600 mt-0.5 max-w-[150px] truncate" title="${escapeHtml(d.observacion)}">${escapeHtml(d.observacion)}</div>` : ''}
+            </td>
+            <td class="px-md py-sm">
+                <div class="flex items-center justify-center gap-xs">
+                    <button onclick="descargarDocumentoAdmin(${d.id})" title="Descargar"
+                        class="p-xs rounded-lg text-secondary hover:bg-secondary-container/20 transition-colors">
+                        <span class="material-symbols-outlined text-lg">download</span>
+                    </button>
+                    <button onclick="abrirRevisarModal(${d.id})" title="Revisar"
+                        class="p-xs rounded-lg text-primary hover:bg-primary-container/20 transition-colors">
+                        <span class="material-symbols-outlined text-lg">rate_review</span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function filtrarDocumentosAdmin() {
+    const busqueda = document.getElementById('docSearchInput').value.trim().toLowerCase();
+    const estado = document.getElementById('docFilterEstado').value;
+
+    let filtrados = documentosData;
+
+    if (busqueda) {
+        filtrados = filtrados.filter(d =>
+            (d.postulanteNombre + ' ' + d.postulanteApellido).toLowerCase().includes(busqueda) ||
+            d.nombreOriginal.toLowerCase().includes(busqueda)
+        );
+    }
+
+    if (estado) {
+        filtrados = filtrados.filter(d => d.estado === estado);
+    }
+
+    renderizarTablaDocumentos(filtrados);
+}
+
+async function descargarDocumentoAdmin(id) {
+    try {
+        const doc = documentosData.find(d => d.id === id);
+        const token = getToken();
+        const res = await fetch(`${API_BASE}/api/admin/documentos/${id}/descargar`, {
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+
+        if (handleAuthError(res.status)) throw new Error('Sesión expirada');
+        if (!res.ok) throw new Error('Error al descargar');
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc ? doc.nombreOriginal : 'documento';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+        mostrarToastAdmin('Descarga iniciada', 'success');
+    } catch (err) {
+        mostrarToastAdmin('Error al descargar: ' + err.message, 'error');
+    }
+}
+
+function abrirRevisarModal(id) {
+    const doc = documentosData.find(d => d.id === id);
+    if (!doc) return;
+
+    documentoRevisandoId = id;
+
+    const info = document.getElementById('revisarDocumentoInfo');
+    const estadoLabels = { 'PENDIENTE': 'Pendiente', 'APROBADO': 'Aprobado', 'EN_OBSERVACION': 'En observación' };
+    const estadoColors = {
+        'PENDIENTE': 'bg-yellow-100 text-yellow-800',
+        'APROBADO': 'bg-green-100 text-green-800',
+        'EN_OBSERVACION': 'bg-red-100 text-red-800'
+    };
+
+    info.innerHTML = `
+        <div class="grid grid-cols-2 gap-sm text-sm">
+            <div><span class="text-on-surface-variant">Estudiante:</span> <span class="font-medium">${escapeHtml(doc.postulanteNombre + ' ' + doc.postulanteApellido)}</span></div>
+            <div><span class="text-on-surface-variant">Documento:</span> <span class="font-medium">${escapeHtml(doc.nombreOriginal)}</span></div>
+            <div><span class="text-on-surface-variant">Estado actual:</span> <span class="px-xs py-0.5 rounded text-xs ${estadoColors[doc.estado] || 'bg-gray-100'}">${estadoLabels[doc.estado] || doc.estado}</span></div>
+            <div><span class="text-on-surface-variant">Fecha de envío:</span> <span class="font-medium">${new Date(doc.fechaSubida).toLocaleString('es-PE')}</span></div>
+        </div>
+    `;
+
+    document.getElementById('observacionContainer').classList.add('hidden');
+    document.getElementById('observacionInput').value = '';
+    document.getElementById('observacionError').classList.add('hidden');
+    document.getElementById('revisarModal').classList.remove('hidden');
+}
+
+function cambiarEstadoDoc(estado) {
+    const container = document.getElementById('observacionContainer');
+
+    if (estado === 'EN_OBSERVACION') {
+        container.classList.remove('hidden');
+    } else {
+        container.classList.add('hidden');
+        document.getElementById('observacionError').classList.add('hidden');
+        confirmarCambioEstado(estado);
+    }
+}
+
+async function confirmarCambioEstado(estado) {
+    const body = { estado };
+
+    if (estado === 'EN_OBSERVACION') {
+        const obs = document.getElementById('observacionInput').value.trim();
+        if (!obs) {
+            document.getElementById('observacionError').classList.remove('hidden');
+            return;
+        }
+        body.observacion = obs;
+    }
+
+    try {
+        await apiPut(`/api/admin/documentos/${documentoRevisandoId}/estado`, body);
+        cerrarModal('revisarModal');
+        await cargarDocumentosAdmin();
+        mostrarToastAdmin('Estado actualizado exitosamente', 'success');
+    } catch (err) {
+        mostrarToastAdmin('Error al actualizar: ' + err.message, 'error');
+    }
+}
+
+function guardarRevision() {
+    const doc = documentosData.find(d => d.id === documentoRevisandoId);
+    if (!doc) return;
+
+    const container = document.getElementById('observacionContainer');
+    if (!container.classList.contains('hidden')) {
+        const obs = document.getElementById('observacionInput').value.trim();
+        if (!obs) {
+            document.getElementById('observacionError').classList.remove('hidden');
+            return;
+        }
+        confirmarCambioEstado('EN_OBSERVACION');
+    } else {
+        mostrarToastAdmin('Seleccione un estado: Aprobado o En observación', 'warning');
+    }
+}
+
+function mostrarToastAdmin(mensaje, tipo) {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const toast = document.createElement('div');
+    const bgColor = tipo === 'success' ? 'bg-green-600' : tipo === 'error' ? 'bg-red-600' : 'bg-blue-600';
+    const icon = tipo === 'success' ? 'check_circle' : tipo === 'error' ? 'error' : 'info';
+
+    toast.className = `${bgColor} text-white px-md py-sm rounded-lg shadow-lg flex items-center gap-sm animate-in slide-in-from-right duration-300`;
+    toast.innerHTML = `
+        <span class="material-symbols-outlined text-lg">${icon}</span>
+        <span class="font-body-md text-sm">${escapeHtml(mensaje)}</span>
+    `;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s';
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
 }
 
 function cerrarSesion() {
